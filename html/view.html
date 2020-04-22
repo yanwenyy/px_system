@@ -2,101 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            background: #00043A;
-            color: #fff;
-        }
-
-        .box {
-            box-sizing: border-box;
-            height: auto;
-            padding: 20px;
-            word-break: break-all;
-        }
-        .box-div{
-            width: 100%;
-            min-height: 300px;
-            padding: 20px;
-            border: 1px solid #fff;
-            background: rgba(1, 2, 63, 0.6);
-        }
-        .row {
-            margin: 0;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        .red {
-            /*background: red;*/
-        }
-
-        .green {
-            /*background:green;*/
-        }
-
-        .orange {
-            /*background: orange;*/
-        }
-
-        @media (min-width: 1200px) and (max-width: 2000px) {
-            .col-lg-6 {
-                width: 50%;
-            }
-        }
-
-        @media (min-width: 2000px) {
-            .col-lgx-4 {
-                width: 33.33333333%;
-            }
-        }
-
-        .process-div {
-            width: 300px;
-            height: 20px;
-            background: darkgrey;
-            margin-bottom: 20px;
-        }
-
-        .process-bar {
-            height: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/view.css">
 </head>
 <body>
-<div class="">
-    <div class="row">
-        <div class="box red col-lgx-4 col-lg-6 col-xs-12">
-            <div class="box-div">
-                <h3>springboot项目websocket测试demo</h3>
-                <h4>测试说明</h4>
-                <h5>
-                    文本框中数据数据，点击‘发送测试’，文本框中的数据会发送到后台websocket，后台接受到之后，会再推送数据到前端，展示在下方；点击关闭连接，可以关闭该websocket；可以跟踪代码，了解具体的流程；代码上有详细注解</h5>
-                <br/>
-                <input id="text" type="text"/>
-                <button onclick="send()">发送测试</button>
-                <hr/>
-                <button onclick="clos()">关闭连接</button>
-                <hr/>
-                <div id="message"></div>
+<div>
+    <div class="title-bg">
+        <span class="inline-block time-show">
+            <span class="inline-block time-year"></span>
+            <span class="inline-block time-week"></span>
+            <span class="inline-block time-line"></span>
+            <span class="inline-block time-hour"></span>
+        </span>
+    </div>
+    <div class="body-div">
+        <div class="row">
+            <div class="box red col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div-title"><span class="inline-block">数据概览</span></div>
+                    <div class="overview box-sizing">
+                        <ul>
+                            <li>
+                                <span>当日新增学员</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>当月新增学员</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>总招生数量</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>累计定金人数</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>累计新增全款人数</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>累计退费人数</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>累计退费金额</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>当日文化课报名人数</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>当月文化课报名人数</span>
+                                <span>690</span>
+                            </li>
+                            <li>
+                                <span>联报率%</span>
+                                <span>690</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="box green col-lgx-4 col-lg-6 col-xs-12">
-            <div class="box-div">
-
+            <div class="box green col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title"><span class="inline-block">整体情况分析</span></div>
+                        <div id="totalData" style="width:100%;height: 398px"></div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="box orange col-lgx-4 col-lg-6 col-xs-12">
-            <div class="box-div">
-                <div id="main" style="width: 100%;height:400px;"></div>
+            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title"><span class="inline-block">归属数据</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title"><span class="inline-block">招生进度</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title"><span class="inline-block">各机构招生情况</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title" style="width: 430px"><span class="inline-block">各机构文化课招生情况</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box orange col-lgx-6 col-lg-12 col-xs-12">
+                <div class="box-div">
+                    <div class="box-div">
+                        <div class="box-div-title"><span class="inline-block">数据获取量</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -104,164 +120,8 @@
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.js"></script>
 <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
+<script src="../js/view.js"></script>
 <script>
-    $(function () {
-        console.log(window.screen.width);
-        var websocket = null;
-        if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://123.57.42.98:8080/px_edu/imserver/lxb");
-        } else {
-            alert("您的浏览器不支持websocket");
-        }
-        websocket.onerror = function () {
-            setMessageInHtml("send error！");
-        }
-        websocket.onopen = function () {
-            setMessageInHtml("connection success！")
-        }
-        websocket.onmessage = function (event) {
-            setMessageInHtml(event.data);
-        }
-        websocket.onclose = function () {
-            setMessageInHtml("closed websockettttttt!")
-        }
-        window.onbeforeunload = function () {
-            close();
-        }
 
-        function setMessageInHtml(message) {
-            document.getElementById('message').innerHTML += message;
-            var html = '';
-            for (var i = 0; i < 5; i++) {
-                var num = i + "90", total = 500, color = rgb();
-                html += '<div class="process-div">' +
-                    '<div class="process-bar" style="width:' + (num / total) * 100 + '%;background: rgb' + color + '"></div></div>';
-            }
-            $(".green>.box-div").html(html);
-            // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('main'));
-
-            // 指定图表的配置项和数据
-            var option = {
-                legend: {},
-                tooltip: {},
-                dataset: {
-                    source: [
-                        ['name', '全部', '北京小泽', '北京九鼎', '广州一尚', '西安青卓', '郑州小泽'],
-                        ['线上', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
-                        ['教学部', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
-                        ['地推', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
-                        ['画室', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1],
-                        ['其他', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
-                    ]
-                },
-                series: [{
-                    type: 'pie',
-                    radius: 70,
-                    center: ['25%', '30%'],
-                    label: {
-                        position: 'inside'
-                    },
-                    // No encode specified, by default, it is '2012'.
-                }, {
-                    type: 'pie',
-                    radius: 50,
-                    center: ['45%', '30%'],
-                    label: {
-                        position: 'inside'
-                    },
-                    encode: {
-                        itemName: 'name',
-                        value: '全部'
-                    }
-                }, {
-                    type: 'pie',
-                    radius: 50,
-                    center: ['65%', '30%'],
-                    label: {
-                        position: 'inside'
-                    },
-                    encode: {
-                        itemName: 'name',
-                        value: '北京小泽'
-                    }
-                },
-                    {
-                        type: 'pie',
-                        radius: 50,
-                        center: ['85%', '30%'],
-                        label: {
-                            position: 'inside'
-                        },
-                        encode: {
-                            itemName: 'name',
-                            value: '北京九鼎'
-                        }
-                    },
-                    {
-                        type: 'pie',
-                        radius: 50,
-                        center: ['25%', '75%'],
-                        label: {
-                            position: 'inside'
-                        },
-                        encode: {
-                            itemName: 'name',
-                            value: '广州一尚'
-                        }
-                    },{
-                        type: 'pie',
-                        radius: 50,
-                        center: ['45%', '75%'],
-                        label: {
-                            position: 'inside'
-                        },
-                        encode: {
-                            itemName: 'name',
-                            value: '西安青卓'
-                        }
-                    },{
-                        type: 'pie',
-                        radius: 50,
-                        center: ['65%', '75%'],
-                        label: {
-                            position: 'inside'
-                        },
-                        encode: {
-                            itemName: 'name',
-                            value: '郑州小泽'
-                        }
-                    }]
-            };
-
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-        }
-
-        function close() {
-            websocket.close(3000, "强制关闭");
-        }
-
-        function send() {
-            var msg = document.getElementById('text').value;
-            websocket.send(msg);
-        };
-
-        function rgb() {//rgb颜色随机
-            var r = Math.floor(Math.random() * 256);
-            var g = Math.floor(Math.random() * 256);
-            var b = Math.floor(Math.random() * 256);
-            var rgb = '(' + r + ',' + g + ',' + b + ')';
-            return rgb;
-        }
-
-        function color16() {//十六进制颜色随机
-            var r = Math.floor(Math.random() * 256);
-            var g = Math.floor(Math.random() * 256);
-            var b = Math.floor(Math.random() * 256);
-            var color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
-            return color;
-        }
-    })
 </script>
 </html>
