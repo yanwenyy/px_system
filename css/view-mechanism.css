@@ -186,8 +186,38 @@ body {
     margin-top: 15px;
     text-align: center;
 }
-
-
+.box-div-title2{
+    width: 430px
+}
+@media (max-width: 900px) {
+    .echarts-div2{
+        width: 100%;
+    }
+    #baiduList{
+        width: 100%;
+    }
+    .time-show{
+        font-size: 12px;
+    }
+    .student-process{
+        font-size: 12px;
+    }
+    .student-process-list{
+        margin-bottom: 20px;
+    }
+    .student-process-list>div:first-child{
+        width: 80%;
+    }
+    .process-div{
+        width: 69%;
+    }
+    .box-div-title2{
+        width: 330px
+    }
+    .time-year{
+        margin-right: 0;
+    }
+}
 @media (min-width: 1200px) and (max-width: 2000px) {
     .col-lg-6 {
         width: 50%;
