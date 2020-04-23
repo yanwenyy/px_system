@@ -75,7 +75,7 @@
                 <div class="box-div">
                     <div class="box-div">
                         <div class="box-div-title"><span class="inline-block">整体情况分析</span></div>
-                        <div id="totalData" style="width:100%;height: 398px"></div>
+                        <div id="totalData" class="echarts-div"></div>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 <div class="box-div">
                     <div class="box-div">
                         <div class="box-div-title"><span class="inline-block">归属数据</span></div>
-                        <div id="ascription" style="width:100%;height: 398px"></div>
+                        <div id="ascription" class="echarts-div"></div>
                     </div>
                 </div>
             </div>
@@ -207,7 +207,8 @@
                             <div class="student-process-list">
                                 <div class="inline-block">
                                     <div class="process-div">
-                                        <div class="process-bar light-blue-bar inline-block" style="width: 40%">40%</div>
+                                        <div class="process-bar light-blue-bar inline-block" style="width: 40%">40%
+                                        </div>
                                         <span>1203人</span>
                                     </div>
                                 </div>
@@ -228,25 +229,90 @@
                     </div>
                 </div>
             </div>
-            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
-                <div class="box-div">
-                    <div class="box-div">
-                        <div class="box-div-title"><span class="inline-block">各机构招生情况</span></div>
-                        <div id="student" style="width:100%;height: 398px"></div>
-                    </div>
+            <div class="box col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div box-foot">
+                    <div class="box-div-title"><span class="inline-block">各机构招生情况</span></div>
+                    <div id="student" class="echarts-div"></div>
                 </div>
             </div>
-            <div class="box orange col-lgx-3 col-lg-6 col-xs-12">
-                <div class="box-div">
-                    <div class="box-div">
-                        <div class="box-div-title" style="width: 430px"><span class="inline-block">各机构文化课招生情况</span></div>
-                    </div>
+            <div class="box col-lgx-3 col-lg-6 col-xs-12">
+                <div class="box-div box-foot">
+                    <div class="box-div-title" style="width: 430px"><span class="inline-block">各机构文化课招生情况</span></div>
+                    <div id="course" class="echarts-div"></div>
                 </div>
             </div>
-            <div class="box orange col-lgx-6 col-lg-12 col-xs-12">
-                <div class="box-div">
-                    <div class="box-div">
-                        <div class="box-div-title"><span class="inline-block">数据获取量</span></div>
+            <div class="box col-lgx-6 col-lg-12 col-xs-12">
+                <div class="box-div box-foot box-sizing">
+                    <div class="box-div-title"><span class="inline-block">数据获取量</span></div>
+                    <div id="getList" class="box-sizing inline-block echarts-div2"></div>
+                    <div id="baiduList" class="box-sizing inline-block">
+                        <table>
+                            <tr>
+                                <th>画室</th>
+                                <th>总数据(元)</th>
+                                <th>有效数据(元)</th>
+                                <th>有效数据率%</th>
+                                <th>今日消费(元)</th>
+                                <th>单个有效数据成本(元)</th>
+                            </tr>
+                            <tr>
+                                <td>北京小泽</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>济南小泽</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>郑州小泽</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>广州一尚</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>西安清美</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>西安青卓</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td>北京九鼎</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>52.67%</td>
+                                <td>6000</td>
+                                <td>2000</td>
+                            </tr>
+                        </table>
+                        <div class="baiduList-title">百度渠道获取数据</div>
                     </div>
                 </div>
             </div>
@@ -258,6 +324,28 @@
 <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
 <script src="../js/view.js"></script>
 <script>
+    //判断是否ie
+    var DEFAULT_VERSION = 9;
+    var ua = navigator.userAgent.toLowerCase();
+    var isIE = ua.indexOf("msie") > -1;
+    var safariVersion;
+    console.log(ua);
+    console.log(window.screen.width);
+    if (isIE) {
+        console.log("ie");
+        safariVersion = ua.match(/msie ([\d.]+)/)[1];
+        var sa = parseInt(safariVersion);
+        if (safariVersion <= DEFAULT_VERSION) {
+            //ie9以下，添加class名调用slide框架
+            console.log("ie9下");
+            alert("您的ie版本较低,建议您下载最新版本查看")
+        } else {
+            //ie9以上，调用swiper2
+            console.log("ie9上");
 
+        }
+    } else {
+        //非ie
+    }
 </script>
 </html>

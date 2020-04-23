@@ -41,6 +41,8 @@ $(function () {
     totalData();
     ascription();
     student();
+    course();
+    getList();
 
     //整体情况分析
     function totalData() {
@@ -215,7 +217,7 @@ $(function () {
             },
             series: [{
                 type: 'pie',
-                radius: 60,
+                radius: 40,
                 center: ['18%', '20%'],
                 label: {
                     position: 'inside',
@@ -229,7 +231,7 @@ $(function () {
                 // No encode specified, by default, it is '2012'.
             }, {
                 type: 'pie',
-                radius: 60,
+                radius: 40,
                 center: ['38%', '20%'],
                 label: {
                     position: 'inside',
@@ -242,7 +244,7 @@ $(function () {
                 }
             }, {
                 type: 'pie',
-                radius: 60,
+                radius: 40,
                 center: ['58%', '20%'],
                 label: {
                     position: 'inside',
@@ -256,7 +258,7 @@ $(function () {
             },
                 {
                     type: 'pie',
-                    radius: 60,
+                    radius: 40,
                     center: ['78%', '20%'],
                     label: {
                         position: 'inside',
@@ -270,7 +272,7 @@ $(function () {
                 },
                 {
                     type: 'pie',
-                    radius: 60,
+                    radius: 40,
                     center: ['18%', '65%'],
                     label: {
                         position: 'inside',
@@ -283,7 +285,7 @@ $(function () {
                     }
                 }, {
                     type: 'pie',
-                    radius: 60,
+                    radius: 40,
                     center: ['38%', '65%'],
                     label: {
                         position: 'inside',
@@ -296,7 +298,7 @@ $(function () {
                     }
                 }, {
                     type: 'pie',
-                    radius: 60,
+                    radius: 40,
                     center: ['58%', '65%'],
                     label: {
                         position: 'inside',
@@ -310,7 +312,7 @@ $(function () {
                 },
                 {
                     type: 'pie',
-                    radius: 60,
+                    radius: 40,
                     center: ['78%', '65%'],
                     label: {
                         position: 'inside',
@@ -331,7 +333,7 @@ $(function () {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('student'));
         // 指定图表的配置项和数据
-        var     option = {
+        var option = {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -339,11 +341,23 @@ $(function () {
                 }
             },
             legend: {
-                data: ['当天', '前一天', '前两天', '前三天', '前四天', '前五天', '前六天'],
+                data: [{
+                    name:'当天',
+                    textStyle:{
+                        color:'#fff',
+                        fontSize:11,
+                        padding: [0, 0,0,13],
+                    },
+                }, '前一天', '前两天', '前三天', '前四天', '前五天', '前六天'],
                 bottom: '5%',
                 textStyle:{
-                    color:'#fff'
-                }
+                    color:'#fff',
+                    fontSize:11,
+                    padding: [0, 0,0,8],
+                },
+                align: '500' ,
+                itemWidth: 40,
+                itemHeight: 22 ,
             },
             grid: {
                 left: '3%',
@@ -427,6 +441,352 @@ $(function () {
                 },
 
 
+            ]
+        };
+        myChart.setOption(option);
+    }
+
+    //各机构文化课招生情况
+    function course() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('course'));
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: [{
+                    name:'当天',
+                    textStyle:{
+                        color:'#fff',
+                        fontSize:11,
+                        padding: [0, 0,0,13],
+                    },
+                }, '前一天', '前两天', '前三天', '前四天', '前五天', '前六天'],
+                bottom: '5%',
+                textStyle:{
+                    color:'#fff',
+                    fontSize:11,
+                    padding: [0, 0,0,8],
+                },
+                align: '500' ,
+                itemWidth: 40,
+                itemHeight: 22 ,
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '15%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    splitLine: {lineStyle: {color: '#2BB5FF',type: 'dotted'}},
+                    axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        },
+                    },
+                }
+            ],
+            series: [
+
+                {
+                    name: '当天',
+                    type: 'bar',
+                    barWidth: '25',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#19287A', label: {show: true}}},
+                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                },
+                {
+                    name: '前一天',
+                    type: 'bar',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#39D9D6', label: {show: true}}},
+                    data: [220, 182, 191, 234, 290, 330, 310, 139]
+                },
+                {
+                    name: '前两天',
+                    type: 'bar',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#8433FD', label: {show: true}}},
+                    data: [150, 232, 201, 154, 190, 330, 410, 120]
+                },
+                {
+                    name: '前三天',
+                    type: 'bar',
+                    barWidth: '25',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#E8C212', label: {show: true}}},
+                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                },
+                {
+                    name: '前四天',
+                    type: 'bar',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#3ECF67', label: {show: true}}},
+                    data: [220, 182, 191, 234, 290, 330, 310, 120]
+                },
+                {
+                    name: '前五天',
+                    type: 'bar',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#FD375C', label: {show: true}}},
+                    data: [150, 232, 201, 154, 190, 330, 410, 340]
+                }, {
+                    name: '前六天',
+                    type: 'bar',
+                    stack: '广告',
+                    itemStyle: {normal: {color: '#FF9019', label: {show: true}}},
+                    data: [150, 232, 201, 154, 190, 330, 410, 200]
+                },
+
+
+            ]
+        };
+        myChart.setOption(option);
+    }
+
+    //数据获取量
+    function getList() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('getList'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: [{
+                text: ''
+            }, {
+                subtext: '全部',
+                subtextStyle: {
+                    color: '#2BB6FF'
+                },
+                left: '15%',
+                top: '42%',
+                textAlign: 'center'
+            }, {
+                subtext: '北京小泽',
+                subtextStyle: {
+                    color: '#2BB6FF'
+                },
+                left: '40%',
+                top: '42%',
+                textAlign: 'center'
+            }, {
+                subtext: '济南小泽',
+                subtextStyle: {
+                    color: '#2BB6FF'
+                },
+                left: '65%',
+                top: '42%',
+                textAlign: 'center'
+            },
+                {
+                    subtext: '郑州小泽',
+                    subtextStyle: {
+                        color: '#2BB6FF'
+                    },
+                    left: '90%',
+                    top: '42%',
+                    textAlign: 'center'
+                }, {
+                    subtext: '广州一尚',
+                    subtextStyle: {
+                        color: '#2BB6FF'
+                    },
+                    left: '15%',
+                    top: '84%',
+                    textAlign: 'center'
+                }, {
+                    subtext: '西安清美',
+                    subtextStyle: {
+                        color: '#2BB6FF'
+                    },
+                    left: '40%',
+                    top: '84%',
+                    textAlign: 'center'
+                },
+                {
+                    subtext: '西安青卓',
+                    subtextStyle: {
+                        color: '#2BB6FF'
+                    },
+                    left: '65%',
+                    top: '84%',
+                    textAlign: 'center'
+                },
+                {
+                    subtext: '北京九鼎',
+                    subtextStyle: {
+                        color: '#2BB6FF'
+                    },
+                    left: '90%',
+                    top: '84%',
+                    textAlign: 'center'
+                }],
+            legend: {
+                bottom: '3%',
+                textStyle:{
+                    color:'#fff',
+                    fontSize:11
+                }},
+            tooltip: {},
+            dataset: {
+                source: [
+                    ['product', '数据获取量', '有效数据量', '有效率'],
+                    ['1', 41.1, 30.4, 65.1],
+                    ['2', 86.5, 92.1, 85.7],
+                    ['3', 24.1, 67.2, 79.5],
+                    ['4', 24.1, 67.2, 79.5],
+                    ['5', 24.1, 67.2, 79.5],
+                    ['6', 24.1, 67.2, 79.5],
+                    ['7', 24.1, 67.2, 79.5],
+                    ['8', 24.1, 67.2, 79.5],
+                ]
+            },
+            xAxis: [
+                {type: 'category', gridIndex: 0,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 1,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 2,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 3,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 4,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 5,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 6,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {type: 'category', gridIndex: 7,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },}
+            ],
+            yAxis: [
+                {gridIndex: 0,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 1,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 2,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 3,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 4,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 5,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 6,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },},
+                {gridIndex: 7,axisLine: {
+                        lineStyle: {
+                            color: '#2BB5FF',
+                        }
+                    },}
+            ],
+            grid: [
+                {top: '10%',bottom: '60%',right:'75%',left:'5%'},
+                {top: '10%',bottom: '60%',right:'50%',left:'30%'},
+                {top: '10%',bottom: '60%',right:'25%',left:'55%'},
+                {top: '10%',bottom: '60%',right:'0',left:'80%'},
+                {top: '50%',bottom: '20%',right:'75%',left:'5%'},
+                {top: '50%',bottom: '20%',right:'50%',left:'30%'},
+                {top: '50%',bottom: '20%',right:'25%',left:'55%'},
+                {top: '50%',bottom: '20%',right:'0',left:'80%'}
+            ],
+            series: [
+                // These series are in the first grid.
+                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                // These series are in the second grid.
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'line', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
             ]
         };
         myChart.setOption(option);
