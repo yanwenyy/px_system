@@ -56,7 +56,9 @@ $(function () {
             },
             legend: {
                 data: ['2019年', '2020年'],
-                textStyle: {color: '#2BB5FF'}
+                textStyle: {color: '#2BB5FF'},
+                orient: 'vertical' ,
+                right:'4%'
             },
             xAxis: {
                 type: 'category',
@@ -217,7 +219,7 @@ $(function () {
             },
             series: [{
                 type: 'pie',
-                radius: 40,
+                radius: 45,
                 center: ['18%', '20%'],
                 label: {
                     position: 'inside',
@@ -231,7 +233,7 @@ $(function () {
                 // No encode specified, by default, it is '2012'.
             }, {
                 type: 'pie',
-                radius: 40,
+                radius: 45,
                 center: ['38%', '20%'],
                 label: {
                     position: 'inside',
@@ -244,7 +246,7 @@ $(function () {
                 }
             }, {
                 type: 'pie',
-                radius: 40,
+                radius: 45,
                 center: ['58%', '20%'],
                 label: {
                     position: 'inside',
@@ -258,7 +260,7 @@ $(function () {
             },
                 {
                     type: 'pie',
-                    radius: 40,
+                    radius: 45,
                     center: ['78%', '20%'],
                     label: {
                         position: 'inside',
@@ -272,7 +274,7 @@ $(function () {
                 },
                 {
                     type: 'pie',
-                    radius: 40,
+                    radius: 45,
                     center: ['18%', '65%'],
                     label: {
                         position: 'inside',
@@ -285,7 +287,7 @@ $(function () {
                     }
                 }, {
                     type: 'pie',
-                    radius: 40,
+                    radius: 45,
                     center: ['38%', '65%'],
                     label: {
                         position: 'inside',
@@ -298,7 +300,7 @@ $(function () {
                     }
                 }, {
                     type: 'pie',
-                    radius: 40,
+                    radius: 45,
                     center: ['58%', '65%'],
                     label: {
                         position: 'inside',
@@ -312,7 +314,7 @@ $(function () {
                 },
                 {
                     type: 'pie',
-                    radius: 40,
+                    radius: 45,
                     center: ['78%', '65%'],
                     label: {
                         position: 'inside',
