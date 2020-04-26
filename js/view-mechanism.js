@@ -1,4 +1,5 @@
 $(function () {
+    var id=GetQueryString("id");
     //实时time
     function time() {
         var vWeek, vWeek_s, vDay;
@@ -38,14 +39,35 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
-    totalData();
-    ascription();
     student();
     course();
     getList();
-
     //整体情况分析
-    function totalData() {
+    ajax_get("/data/over/all?agencyId="+id,function(data){
+        totalData(data.data)
+    });
+    //归属数据
+    ajax_get("/data/signup/sum?agencyId="+id,function(data){
+        ascription(data.data);
+    });
+    //整体情况分析
+    function totalData(data) {
+        var year=data[0].dataTime.split("-")[0],
+            x_data=[],
+            year_data=[],
+            last_year_data=[],
+            i=0,len=data.length;
+        for(;i<len;i++){
+            var v=data[i];
+            var t=v.dataTime.split(" ")[0];
+            var date=t.split("-")[1]+"/"+t.split("-")[2];
+            x_data.push({
+                value: date,
+                textStyle: {color: '#2BB5FF'}
+            });
+            year_data.push(v.enterNum);
+            last_year_data.push(v.lastYearEnterNum);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('totalData'));
         // 指定图表的配置项和数据
@@ -55,7 +77,7 @@ $(function () {
                 trigger: 'axis'
             },
             legend: {
-                data: ['2019年', '2020年'],
+                data: [year-1+'年', year+'年'],
                 textStyle: {color: '#2BB5FF'},
                 orient: 'vertical' ,
                 right:'4%'
@@ -64,26 +86,7 @@ $(function () {
                 type: 'category',
                 boundaryGap: false,
 
-                data: [
-                    {
-                        value: '周一',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周二',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周三',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周四',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周五',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周六',
-                        textStyle: {color: '#2BB5FF'}
-                    },],
+                data: x_data,
                 axisLine: {
                     lineStyle: {
                         color: '#2BB5FF',
@@ -109,18 +112,18 @@ $(function () {
             },
             series: [
                 {
-                    name: '2019年',
+                    name: year-1+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: [85, 70, 15, 87, 39, 67, 67],
+                    data: last_year_data,
                     itemStyle: {normal: {label: {show: true}}},
                     lineStyle: {color: '#FD375C'}
                 },
                 {
-                    name: '2020年',
+                    name: year+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: [14, 45, 65, 12, 33, 23, 56],
+                    data: year_data,
                     itemStyle: {normal: {label: {show: true, color: "#73D3E2"}}},
                     lineStyle: {color: '#2B44A4'}
                 }
@@ -130,7 +133,7 @@ $(function () {
     }
 
     //归属数据
-    function ascription() {
+    function ascription(data) {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('ascription'));
         // 指定图表的配置项和数据
@@ -147,27 +150,27 @@ $(function () {
                     radius: '55%',
                     center: ['50%', '50%'],
                     data: [
-                        {value: 310, name: '地推',label: {
+                        {value: data.pusnNum, name: '地推',label: {
                                 position: 'inside',
                                 formatter: '{b}\n{d}%',
                                 fontSize: 16,
                             }},
-                        {value: 234, name: '其他',label: {
+                        {value: data.otherNum, name: '其他',label: {
                                 position: 'inside',
                                 formatter: '{b}\n{d}%',
                                 fontSize: 16,
                             }},
-                        {value: 135, name: '画室',label: {
+                        {value: data.studioNum, name: '画室',label: {
                                 position: 'inside',
                                 formatter: '{b}\n{d}%',
                                 fontSize: 16,
                             }},
-                        {value: 154, name: '教学部',label: {
+                        {value: data.edcactionNum, name: '教学部',label: {
                                 position: 'inside',
                                 formatter: '{b}\n{d}%',
                                 fontSize: 16,
                             }},
-                        {value: 335, name: '线上',label: {
+                        {value:data.onlineNum, name: '线上',label: {
                                 position: 'inside',
                                 formatter: '{b}\n{d}%',
                                 fontSize: 16,

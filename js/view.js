@@ -38,8 +38,6 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
-    student();
-    course();
     getList();
     //整体情况分析
     ajax_get("/data/over/all",function(data){
@@ -50,6 +48,22 @@ $(function () {
         ajax_get("/data/everysignup/sum",function(data2){
             ascription(data.data,data2.data)
         });
+    });
+    //总招生进度
+    ajax_get("/data/allschedu",function(data){
+        console.log(data);
+    });
+    //总招生进度
+    ajax_get("/data/allagnecy/schedu",function(data){
+        console.log(data);
+    });
+    //各机构招生情况
+    ajax_get("/data/agency/studio",function(data){
+        student(data.data)
+    });
+    //各机构文化课招生情况
+    ajax_get("/data/agency/cultural",function(data){
+        course(data.data)
     });
     //整体情况分析
     function totalData(data) {
@@ -116,7 +130,7 @@ $(function () {
                     name: year-1+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: year_data,
+                    data: last_year_data,
                     itemStyle: {normal: {label: {show: true}}},
                     lineStyle: {color: '#FD375C'}
                 },
@@ -124,7 +138,7 @@ $(function () {
                     name: year+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: last_year_data,
+                    data: year_data,
                     itemStyle: {normal: {label: {show: true, color: "#73D3E2"}}},
                     lineStyle: {color: '#2B44A4'}
                 }
@@ -135,17 +149,17 @@ $(function () {
 
     //归属数据
     function ascription(total,list) {
-        var source1=["全部"],
-            source2=[total.onlineNum],
-            source3=[total.edcactionNum],
-            source4=[total.pusnNum],
-            source5=[total.studioNum],
-            source6=[total.otherNum],
+        var source1=["name","全部"],
+            source2=["线上",total.onlineNum],
+            source3=['教学部',total.edcactionNum],
+            source4=['地推',total.pusnNum],
+            source5=['画室',total.studioNum],
+            source6=['其他',total.otherNum],
             i=0,len=list.length,
             agencyName=[];
         for(;i<len;i++){
             var v=list[i];
-            agencyName.push(v.agencyName);
+            source1.push(v.agencyName);
             source2.push(v.onlineNum);
             source3.push(v.edcactionNum);
             source4.push(v.pusnNum);
@@ -159,7 +173,7 @@ $(function () {
             title: [{
                 text: ''
             }, {
-                subtext: '全部',
+                subtext: source1[1],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -167,7 +181,7 @@ $(function () {
                 top: '37%',
                 textAlign: 'center'
             }, {
-                subtext: agencyName[0],
+                subtext: source1[2],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -175,7 +189,7 @@ $(function () {
                 top: '37%',
                 textAlign: 'center'
             }, {
-                subtext: agencyName[1],
+                subtext: source1[3],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -184,7 +198,7 @@ $(function () {
                 textAlign: 'center'
             },
                 {
-                    subtext: agencyName[2],
+                    subtext: source1[4],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -192,7 +206,7 @@ $(function () {
                     top: '37%',
                     textAlign: 'center'
                 }, {
-                    subtext: agencyName[3],
+                    subtext: source1[5],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -200,7 +214,7 @@ $(function () {
                     top: '82%',
                     textAlign: 'center'
                 }, {
-                    subtext: agencyName[4],
+                    subtext: source1[6],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -209,7 +223,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: agencyName[5],
+                    subtext: source1[7],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -218,7 +232,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: agencyName[6],
+                    subtext: source1[8],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -230,18 +244,19 @@ $(function () {
             tooltip: {},
             dataset: {
                 source: [
-                    // ['name', '全部', list[0].agencyName, list[1].agencyName, list[2].agencyName, list[3].agencyName, list[4].agencyName,list[5].agencyName,list[6].agencyName],
+                    // ['name', '全部', '北京小泽','济南小泽','郑州小泽','广州一尚','西安清美','西安青卓','北京九鼎'],
+                    // ['name', source1],
                     // ['线上', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7, 73.4, 55.1],
                     // ['教学部', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1, 83.8, 98.7],
                     // ['地推', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5, 92.1, 85.7],
                     // ['画室', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 86.4, 65.2],
                     // ['其他', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 55.2, 67.1],
-                    ['name', source1],
-                    ['线上', source2],
-                    ['教学部', source3],
-                    ['地推', source4],
-                    ['画室', source5],
-                    ['其他', source6]
+                    source1,
+                    source2,
+                    source3,
+                    source4,
+                    source5,
+                    source6
                 ]
             },
             series: [{
@@ -255,7 +270,7 @@ $(function () {
                 },
                 encode: {
                     itemName: 'name',
-                    value: '全部'
+                    value: source1[1]
                 }
                 // No encode specified, by default, it is '2012'.
             }, {
@@ -269,7 +284,7 @@ $(function () {
                 },
                 encode: {
                     itemName: 'name',
-                    value: agencyName[0]
+                    value: source1[2]
                 }
             }, {
                 type: 'pie',
@@ -282,7 +297,7 @@ $(function () {
                 },
                 encode: {
                     itemName: 'name',
-                    value: agencyName[1]
+                    value: source1[3]
                 }
             },
                 {
@@ -296,7 +311,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: agencyName[2]
+                        value: source1[4]
                     }
                 },
                 {
@@ -310,7 +325,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: agencyName[3]
+                        value: source1[5]
                     }
                 }, {
                     type: 'pie',
@@ -323,7 +338,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: agencyName[4]
+                        value: source1[6]
                     }
                 }, {
                     type: 'pie',
@@ -336,7 +351,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: agencyName[5]
+                        value: source1[7]
                     }
                 },
                 {
@@ -350,7 +365,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: agencyName[6]
+                        value: source1[8]
                     }
                 }]
         };
@@ -358,7 +373,15 @@ $(function () {
     }
 
     //各机构招生情况
-    function student() {
+    function student(data) {
+        var i=0,len=data.length,
+            x_data=[],list=[];
+        for(;i<len;i++){
+            var v=data[i];
+            x_data.push(v.agencyName);
+            list.push(v.agencyDtoList);
+        }
+
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('student'));
         // 指定图表的配置项和数据
@@ -390,14 +413,16 @@ $(function () {
             },
             grid: {
                 left: '3%',
-                right: '4%',
+                right: '10%',
                 bottom: '15%',
                 containLabel: true
             },
             xAxis: [
                 {
+                    name:'画室',
                     type: 'category',
-                    data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
+                    // data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
+                    data:x_data,
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -424,21 +449,24 @@ $(function () {
                     barWidth: '25',
                     stack: '广告',
                     itemStyle: {normal: {color: '#19287A', label: {show: true}}},
-                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    // data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    data:[list[0][6].num,list[1][6].num,list[2][6].num,list[3][6].num,list[4][6].num,list[5][6].num,list[6][6].num]
                 },
                 {
                     name: '前一天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#39D9D6', label: {show: true}}},
-                    data: [220, 182, 191, 234, 290, 330, 310, 139]
+                    // data: [220, 182, 191, 234, 290, 330, 310, 139]
+                    data:[list[0][5].num,list[1][5].num,list[2][5].num,list[3][5].num,list[4][5].num,list[5][5].num,list[6][5].num]
                 },
                 {
                     name: '前两天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#8433FD', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 120]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 120]
+                    data:[list[0][4].num,list[1][4].num,list[2][4].num,list[3][4].num,list[4][4].num,list[5][4].num,list[6][4].num]
                 },
                 {
                     name: '前三天',
@@ -446,27 +474,31 @@ $(function () {
                     barWidth: '25',
                     stack: '广告',
                     itemStyle: {normal: {color: '#E8C212', label: {show: true}}},
-                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    // data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    data:[list[0][3].num,list[1][3].num,list[2][3].num,list[3][3].num,list[4][3].num,list[5][3].num,list[6][3].num]
                 },
                 {
                     name: '前四天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#3ECF67', label: {show: true}}},
-                    data: [220, 182, 191, 234, 290, 330, 310, 120]
+                    // data: [220, 182, 191, 234, 290, 330, 310, 120]
+                    data:[list[0][2].num,list[1][2].num,list[2][2].num,list[3][2].num,list[4][2].num,list[5][2].num,list[6][2].num]
                 },
                 {
                     name: '前五天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FD375C', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 340]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 340]
+                    data:[list[0][1].num,list[1][1].num,list[2][1].num,list[3][1].num,list[4][1].num,list[5][1].num,list[6][1].num]
                 }, {
                     name: '前六天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FF9019', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 200]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 200]
+                    data:[list[0][0].num,list[1][0].num,list[2][0].num,list[3][0].num,list[4][0].num,list[5][0].num,list[6][0].num]
                 },
 
 
@@ -476,7 +508,14 @@ $(function () {
     }
 
     //各机构文化课招生情况
-    function course() {
+    function course(data) {
+        var i=0,len=data.length,
+            x_data=[],list=[];
+        for(;i<len;i++){
+            var v=data[i];
+            x_data.push(v.agencyName);
+            list.push(v.agencyDtoList);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('course'));
         // 指定图表的配置项和数据
@@ -508,14 +547,16 @@ $(function () {
             },
             grid: {
                 left: '3%',
-                right: '4%',
+                right: '10%',
                 bottom: '15%',
                 containLabel: true
             },
             xAxis: [
                 {
+                    name:'画室',
                     type: 'category',
-                    data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
+                    // data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
+                    data:x_data,
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -542,21 +583,24 @@ $(function () {
                     barWidth: '25',
                     stack: '广告',
                     itemStyle: {normal: {color: '#19287A', label: {show: true}}},
-                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    // data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    data:[list[0][6].num,list[1][6].num,list[2][6].num,list[3][6].num,list[4][6].num,list[5][6].num,list[6][6].num]
                 },
                 {
                     name: '前一天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#39D9D6', label: {show: true}}},
-                    data: [220, 182, 191, 234, 290, 330, 310, 139]
+                    // data: [220, 182, 191, 234, 290, 330, 310, 139]
+                    data:[list[0][5].num,list[1][5].num,list[2][5].num,list[3][5].num,list[4][5].num,list[5][5].num,list[6][5].num]
                 },
                 {
                     name: '前两天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#8433FD', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 120]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 120]
+                    data:[list[0][4].num,list[1][4].num,list[2][4].num,list[3][4].num,list[4][4].num,list[5][4].num,list[6][4].num]
                 },
                 {
                     name: '前三天',
@@ -564,27 +608,31 @@ $(function () {
                     barWidth: '25',
                     stack: '广告',
                     itemStyle: {normal: {color: '#E8C212', label: {show: true}}},
-                    data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    // data: [120, 132, 101, 134, 90, 230, 210, 90]
+                    data:[list[0][3].num,list[1][3].num,list[2][3].num,list[3][3].num,list[4][3].num,list[5][3].num,list[6][3].num]
                 },
                 {
                     name: '前四天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#3ECF67', label: {show: true}}},
-                    data: [220, 182, 191, 234, 290, 330, 310, 120]
+                    // data: [220, 182, 191, 234, 290, 330, 310, 120]
+                    data:[list[0][2].num,list[1][2].num,list[2][2].num,list[3][2].num,list[4][2].num,list[5][2].num,list[6][2].num]
                 },
                 {
                     name: '前五天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FD375C', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 340]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 340]
+                    data:[list[0][1].num,list[1][1].num,list[2][1].num,list[3][1].num,list[4][1].num,list[5][1].num,list[6][1].num]
                 }, {
                     name: '前六天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FF9019', label: {show: true}}},
-                    data: [150, 232, 201, 154, 190, 330, 410, 200]
+                    // data: [150, 232, 201, 154, 190, 330, 410, 200]
+                    data:[list[0][0].num,list[1][0].num,list[2][0].num,list[3][0].num,list[4][0].num,list[5][0].num,list[6][0].num]
                 },
 
 

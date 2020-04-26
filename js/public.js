@@ -4,7 +4,12 @@ const http_url={
     test_url:"http://123.57.42.98:8080/px_edu",//测试
     url:"http://123.57.42.98:8080/px_edu"
 };
-var rotation_src=http_url.url+"showImg/rotation/";
+function GetQueryString(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
 function ajax(url,data,succ){
     // console.log(url);
     $.ajax({
