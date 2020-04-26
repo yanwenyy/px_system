@@ -38,14 +38,37 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
-    totalData();
-    ascription();
     student();
     course();
     getList();
-
     //整体情况分析
-    function totalData() {
+    ajax_get("/data/over/all",function(data){
+        totalData(data.data)
+    });
+    //归属数据
+    ajax_get("/data/signup/sum",function(data){
+        ajax_get("/data/everysignup/sum",function(data2){
+            ascription(data.data,data2.data)
+        });
+    });
+    //整体情况分析
+    function totalData(data) {
+        var year=data[0].dataTime.split("-")[0],
+            x_data=[],
+            year_data=[],
+            last_year_data=[],
+            i=0,len=data.length;
+        for(;i<len;i++){
+            var v=data[i];
+            var t=v.dataTime.split(" ")[0];
+            var date=t.split("-")[1]+"/"+t.split("-")[2];
+            x_data.push({
+                value: date,
+                textStyle: {color: '#2BB5FF'}
+            });
+            year_data.push(v.enterNum);
+            last_year_data.push(v.lastYearEnterNum);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('totalData'));
         // 指定图表的配置项和数据
@@ -55,7 +78,7 @@ $(function () {
                 trigger: 'axis'
             },
             legend: {
-                data: ['2019年', '2020年'],
+                data: [year-1+'年', year+'年'],
                 textStyle: {color: '#2BB5FF'},
                 orient: 'vertical' ,
                 right:'4%'
@@ -64,26 +87,7 @@ $(function () {
                 type: 'category',
                 boundaryGap: false,
 
-                data: [
-                    {
-                        value: '周一',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周二',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周三',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周四',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周五',
-                        textStyle: {color: '#2BB5FF'}
-                    }, {
-                        value: '周六',
-                        textStyle: {color: '#2BB5FF'}
-                    },],
+                data: x_data,
                 axisLine: {
                     lineStyle: {
                         color: '#2BB5FF',
@@ -109,18 +113,18 @@ $(function () {
             },
             series: [
                 {
-                    name: '2019年',
+                    name: year-1+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: [85, 70, 15, 87, 39, 67, 67],
+                    data: year_data,
                     itemStyle: {normal: {label: {show: true}}},
                     lineStyle: {color: '#FD375C'}
                 },
                 {
-                    name: '2020年',
+                    name: year+'年',
                     type: 'line',
                     symbolSize: 8,
-                    data: [14, 45, 65, 12, 33, 23, 56],
+                    data: last_year_data,
                     itemStyle: {normal: {label: {show: true, color: "#73D3E2"}}},
                     lineStyle: {color: '#2B44A4'}
                 }
@@ -130,7 +134,24 @@ $(function () {
     }
 
     //归属数据
-    function ascription() {
+    function ascription(total,list) {
+        var source1=["全部"],
+            source2=[total.onlineNum],
+            source3=[total.edcactionNum],
+            source4=[total.pusnNum],
+            source5=[total.studioNum],
+            source6=[total.otherNum],
+            i=0,len=list.length,
+            agencyName=[];
+        for(;i<len;i++){
+            var v=list[i];
+            agencyName.push(v.agencyName);
+            source2.push(v.onlineNum);
+            source3.push(v.edcactionNum);
+            source4.push(v.pusnNum);
+            source5.push(v.studioNum);
+            source6.push(v.otherNum);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('ascription'));
         // 指定图表的配置项和数据
@@ -146,7 +167,7 @@ $(function () {
                 top: '37%',
                 textAlign: 'center'
             }, {
-                subtext: '北京小泽',
+                subtext: agencyName[0],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -154,7 +175,7 @@ $(function () {
                 top: '37%',
                 textAlign: 'center'
             }, {
-                subtext: '济南小泽',
+                subtext: agencyName[1],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -163,7 +184,7 @@ $(function () {
                 textAlign: 'center'
             },
                 {
-                    subtext: '郑州小泽',
+                    subtext: agencyName[2],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -171,7 +192,7 @@ $(function () {
                     top: '37%',
                     textAlign: 'center'
                 }, {
-                    subtext: '广州一尚',
+                    subtext: agencyName[3],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -179,7 +200,7 @@ $(function () {
                     top: '82%',
                     textAlign: 'center'
                 }, {
-                    subtext: '西安清美',
+                    subtext: agencyName[4],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -188,7 +209,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: '西安青卓',
+                    subtext: agencyName[5],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -197,7 +218,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: '北京九鼎',
+                    subtext: agencyName[6],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -209,12 +230,18 @@ $(function () {
             tooltip: {},
             dataset: {
                 source: [
-                    ['name', '全部', '北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎'],
-                    ['线上', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7, 73.4, 55.1],
-                    ['教学部', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1, 83.8, 98.7],
-                    ['地推', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5, 92.1, 85.7],
-                    ['画室', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 86.4, 65.2],
-                    ['其他', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 55.2, 67.1]
+                    // ['name', '全部', list[0].agencyName, list[1].agencyName, list[2].agencyName, list[3].agencyName, list[4].agencyName,list[5].agencyName,list[6].agencyName],
+                    // ['线上', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7, 73.4, 55.1],
+                    // ['教学部', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1, 83.8, 98.7],
+                    // ['地推', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5, 92.1, 85.7],
+                    // ['画室', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 86.4, 65.2],
+                    // ['其他', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1, 55.2, 67.1],
+                    ['name', source1],
+                    ['线上', source2],
+                    ['教学部', source3],
+                    ['地推', source4],
+                    ['画室', source5],
+                    ['其他', source6]
                 ]
             },
             series: [{
@@ -242,7 +269,7 @@ $(function () {
                 },
                 encode: {
                     itemName: 'name',
-                    value: '北京小泽'
+                    value: agencyName[0]
                 }
             }, {
                 type: 'pie',
@@ -255,7 +282,7 @@ $(function () {
                 },
                 encode: {
                     itemName: 'name',
-                    value: '济南小泽'
+                    value: agencyName[1]
                 }
             },
                 {
@@ -269,7 +296,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: '郑州小泽'
+                        value: agencyName[2]
                     }
                 },
                 {
@@ -283,7 +310,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: '广州一尚'
+                        value: agencyName[3]
                     }
                 }, {
                     type: 'pie',
@@ -296,7 +323,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: '西安清美'
+                        value: agencyName[4]
                     }
                 }, {
                     type: 'pie',
@@ -309,7 +336,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: '西安青卓'
+                        value: agencyName[5]
                     }
                 },
                 {
@@ -323,7 +350,7 @@ $(function () {
                     },
                     encode: {
                         itemName: 'name',
-                        value: '北京九鼎'
+                        value: agencyName[6]
                     }
                 }]
         };
@@ -652,57 +679,82 @@ $(function () {
             dataset: {
                 source: [
                     ['product', '数据获取量', '有效数据量', '有效率'],
-                    ['1', 41.1, 30.4, 65.1],
-                    ['2', 86.5, 92.1, 85.7],
-                    ['3', 24.1, 67.2, 79.5],
-                    ['4', 24.1, 67.2, 79.5],
-                    ['5', 24.1, 67.2, 79.5],
-                    ['6', 24.1, 67.2, 79.5],
-                    ['7', 24.1, 67.2, 79.5],
-                    ['8', 24.1, 67.2, 79.5],
+                    ['0401', 41.1, 30.4, 65.1],
+                    ['0402', 86.5, 92.1, 85.7],
+                    ['0403', 24.1, 67.2, 79.5],
+                    ['0404', 24.1, 67.2, 79.5],
+                    ['0405', 24.1, 67.2, 79.5],
+                    ['0406', 24.1, 67.2, 79.5],
+                    ['0407', 24.1, 67.2, 79.5]
                 ]
             },
             xAxis: [
+
                 {type: 'category', gridIndex: 0,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    },axisLabel: {
+                        interval:0,
+                        //   rotate:30 ,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 1,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 2,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 3,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 4,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 5,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 6,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } },
                 {type: 'category', gridIndex: 7,axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },}
+                    }, axisLabel: {
+                        interval:0,
+                        fontSize: 8 ,
+                    } }
             ],
             yAxis: [
                 {gridIndex: 0,axisLine: {
