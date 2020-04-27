@@ -1045,8 +1045,26 @@ $(function () {
             ],
             series: [
                 // These series are in the first grid.
-                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar',name:'数据获取量', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#7065FB'}},
+                data:[
+                    {name:date_list[0],value:source0[0].dataAmount},
+                    {name:date_list[1],value:source0[1].dataAmount},
+                    {name:date_list[2],value:source0[2].dataAmount},
+                    {name:date_list[3],value:source0[3].dataAmount},
+                    {name:date_list[4],value:source0[4].dataAmount},
+                    {name:date_list[5],value:source0[5].dataAmount},
+                    {name:date_list[6],value:source0[6].dataAmount}
+                        ]},
+                {type: 'bar',name:'有效数据量', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[
+                        {name:date_list[0],value:source0[0].effectiveData},
+                        {name:date_list[1],value:source0[1].effectiveData},
+                        {name:date_list[2],value:source0[2].effectiveData},
+                        {name:date_list[3],value:source0[3].effectiveData},
+                        {name:date_list[4],value:source0[4].effectiveData},
+                        {name:date_list[5],value:source0[5].effectiveData},
+                        {name:date_list[6],value:source0[6].effectiveData}
+                    ]},
                 {
                     type: 'line',
                     xAxisIndex: 0,
