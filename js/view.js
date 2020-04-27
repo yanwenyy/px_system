@@ -145,16 +145,16 @@ $(function () {
                     color='purple-bar';
                     break;
             }
-            html+=`<div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar ${color} inline-block" style="width: ${v.sumSchedu > 1 ? '100' : (v.sumSchedu).toFixed(2) * 100}%">${(v.sumSchedu).toFixed(2) * 100}%</div>
-                                        <span>${v.realSum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${v.studentNum}人</span>
-                                <div class="process-title">${v.agencyName||''}</div>
-                            </div>`
+            html+='<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar '+color+' inline-block" style="width: '+(v.sumSchedu > 1 ? '100' : (v.sumSchedu).toFixed(2) * 100)+'%">'+((v.sumSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<span>'+v.realSum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+v.studentNum+'人</span>'+
+                                '<div class="process-title">'+(v.agencyName||'')+'</div>'+
+                            '</div>'
         }
         $(".process-list").html(html)
     });
