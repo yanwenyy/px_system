@@ -40,42 +40,144 @@ $(function () {
     }, 1000);
     getList();
     //整体情况分析
-    ajax_get("/data/over/all",function(data){
+    ajax_get("/data/over/all", function (data) {
         totalData(data.data)
     });
     //归属数据
-    ajax_get("/data/signup/sum",function(data){
-        ajax_get("/data/everysignup/sum",function(data2){
-            ascription(data.data,data2.data)
+    ajax_get("/data/signup/sum", function (data) {
+        ajax_get("/data/everysignup/sum", function (data2) {
+            ascription(data.data, data2.data)
         });
     });
     //总招生进度
-    ajax_get("/data/allschedu",function(data){
-        console.log(data);
+    ajax_get("/data/allschedu", function (res) {
+        var data = res.data,
+            html = `
+            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar red-bar inline-block" style="width: ${data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100}%">${(data.sumSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realSum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.studentNum}人</span>
+                                <div class="process-title">总招生进度</div>
+                            </div>
+                            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar blue-bar inline-block" style="width: ${data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100}%"> ${(data.onlineSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realOnlineNum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.onlineNum}人</span>
+                                <div class="process-title">线上</div>
+                            </div>
+                            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar green-bar inline-block" style="width: ${data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100}%">${(data.eduSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realEduNum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.edcactionNum}人</span>
+                                <div class="process-title">教学部</div>
+                            </div>
+                            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar orange-bar inline-block" style="width: ${data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100}%">${(data.pushSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realPusnNum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.pusnNum}人</span>
+                                <div class="process-title">地推</div>
+                            </div>
+                            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar pink-bar inline-block" style="width: ${data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100}%">${(data.studioSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realStudioNum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.studioNum}人</span>
+                                <div class="process-title">画室</div>
+                            </div>
+                            <div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar purple-bar inline-block" style="width:${data.otherSchedu > 1 ? '100' : (data.otherSchedu).toFixed(2) * 100}%">${(data.otherSchedu).toFixed(2) * 100}%</div>
+                                        <span>${data.realOtherNum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${data.otherNum}人</span>
+                                <div class="process-title">其他</div>
+                            </div>
+            `;
+        $(".process-total").html(html);
+
     });
-    //总招生进度
-    ajax_get("/data/allagnecy/schedu",function(data){
-        console.log(data);
+    //机构招生进度
+    ajax_get("/data/allagnecy/schedu", function (data) {
+        var list=data.data,i=0,len=list.length,html='';
+        for(;i<len;i++){
+            var v=list[i],color='';
+            switch (i){
+                case 0:
+                    color='red-bar';
+                    break;
+                case 1:
+                    color='blue-bar';
+                    break;
+                case 2:
+                    color='purple-bar';
+                    break;
+                case 3:
+                    color='green-bar';
+                    break;
+                case 4:
+                    color='yellow-bar';
+                    break;
+                case 5:
+                    color='light-blue-bar';
+                    break;
+                case 6:
+                    color='purple-bar';
+                    break;
+            }
+            html+=`<div class="student-process-list">
+                                <div class="inline-block">
+                                    <div class="process-div">
+                                        <div class="process-bar ${color} inline-block" style="width: ${v.sumSchedu > 1 ? '100' : (v.sumSchedu).toFixed(2) * 100}%">${(v.sumSchedu).toFixed(2) * 100}%</div>
+                                        <span>${v.realSum}人</span>
+                                    </div>
+                                </div>
+                                <span class="inline-block process-num">${v.studentNum}人</span>
+                                <div class="process-title">${v.agencyName||''}</div>
+                            </div>`
+        }
+        $(".process-list").html(html)
     });
     //各机构招生情况
-    ajax_get("/data/agency/studio",function(data){
+    ajax_get("/data/agency/studio", function (data) {
         student(data.data)
     });
     //各机构文化课招生情况
-    ajax_get("/data/agency/cultural",function(data){
+    ajax_get("/data/agency/cultural", function (data) {
         course(data.data)
     });
+
     //整体情况分析
     function totalData(data) {
-        var year=data[0].dataTime.split("-")[0],
-            x_data=[],
-            year_data=[],
-            last_year_data=[],
-            i=0,len=data.length;
-        for(;i<len;i++){
-            var v=data[i];
-            var t=v.dataTime.split(" ")[0];
-            var date=t.split("-")[1]+"/"+t.split("-")[2];
+        var year = data[0].dataTime.split("-")[0],
+            x_data = [],
+            year_data = [],
+            last_year_data = [],
+            i = 0, len = data.length;
+        for (; i < len; i++) {
+            var v = data[i];
+            var t = v.dataTime.split(" ")[0];
+            var date = t.split("-")[1] + "/" + t.split("-")[2];
             x_data.push({
                 value: date,
                 textStyle: {color: '#2BB5FF'}
@@ -92,10 +194,10 @@ $(function () {
                 trigger: 'axis'
             },
             legend: {
-                data: [year-1+'年', year+'年'],
+                data: [year - 1 + '年', year + '年'],
                 textStyle: {color: '#2BB5FF'},
-                orient: 'vertical' ,
-                right:'4%'
+                orient: 'vertical',
+                right: '4%'
             },
             xAxis: {
                 type: 'category',
@@ -127,7 +229,7 @@ $(function () {
             },
             series: [
                 {
-                    name: year-1+'年',
+                    name: year - 1 + '年',
                     type: 'line',
                     symbolSize: 8,
                     data: last_year_data,
@@ -135,7 +237,7 @@ $(function () {
                     lineStyle: {color: '#FD375C'}
                 },
                 {
-                    name: year+'年',
+                    name: year + '年',
                     type: 'line',
                     symbolSize: 8,
                     data: year_data,
@@ -148,17 +250,17 @@ $(function () {
     }
 
     //归属数据
-    function ascription(total,list) {
-        var source1=["name","全部"],
-            source2=["线上",total.onlineNum],
-            source3=['教学部',total.edcactionNum],
-            source4=['地推',total.pusnNum],
-            source5=['画室',total.studioNum],
-            source6=['其他',total.otherNum],
-            i=0,len=list.length,
-            agencyName=[];
-        for(;i<len;i++){
-            var v=list[i];
+    function ascription(total, list) {
+        var source1 = ["name", "全部"],
+            source2 = ["线上", total.onlineNum],
+            source3 = ['教学部', total.edcactionNum],
+            source4 = ['地推', total.pusnNum],
+            source5 = ['画室', total.studioNum],
+            source6 = ['其他', total.otherNum],
+            i = 0, len = list.length,
+            agencyName = [];
+        for (; i < len; i++) {
+            var v = list[i];
             source1.push(v.agencyName);
             source2.push(v.onlineNum);
             source3.push(v.edcactionNum);
@@ -374,10 +476,10 @@ $(function () {
 
     //各机构招生情况
     function student(data) {
-        var i=0,len=data.length,
-            x_data=[],list=[];
-        for(;i<len;i++){
-            var v=data[i];
+        var i = 0, len = data.length,
+            x_data = [], list = [];
+        for (; i < len; i++) {
+            var v = data[i];
             x_data.push(v.agencyName);
             list.push(v.agencyDtoList);
         }
@@ -394,22 +496,22 @@ $(function () {
             },
             legend: {
                 data: [{
-                    name:'当天',
-                    textStyle:{
-                        color:'#fff',
-                        fontSize:11,
-                        padding: [0, 0,0,13],
+                    name: '当天',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 11,
+                        padding: [0, 0, 0, 13],
                     },
                 }, '前一天', '前两天', '前三天', '前四天', '前五天', '前六天'],
                 bottom: '5%',
-                textStyle:{
-                    color:'#fff',
-                    fontSize:11,
-                    padding: [0, 0,0,8],
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 11,
+                    padding: [0, 0, 0, 8],
                 },
-                align: '500' ,
+                align: '500',
                 itemWidth: 40,
-                itemHeight: 22 ,
+                itemHeight: 22,
             },
             grid: {
                 left: '3%',
@@ -419,10 +521,10 @@ $(function () {
             },
             xAxis: [
                 {
-                    name:'画室',
+                    name: '画室',
                     type: 'category',
                     // data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
-                    data:x_data,
+                    data: x_data,
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -433,7 +535,7 @@ $(function () {
             yAxis: [
                 {
                     type: 'value',
-                    splitLine: {lineStyle: {color: '#2BB5FF',type: 'dotted'}},
+                    splitLine: {lineStyle: {color: '#2BB5FF', type: 'dotted'}},
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -450,7 +552,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#19287A', label: {show: true}}},
                     // data: [120, 132, 101, 134, 90, 230, 210, 90]
-                    data:[list[0][6].num,list[1][6].num,list[2][6].num,list[3][6].num,list[4][6].num,list[5][6].num,list[6][6].num]
+                    data: [list[0][6].num, list[1][6].num, list[2][6].num, list[3][6].num, list[4][6].num, list[5][6].num, list[6][6].num]
                 },
                 {
                     name: '前一天',
@@ -458,7 +560,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#39D9D6', label: {show: true}}},
                     // data: [220, 182, 191, 234, 290, 330, 310, 139]
-                    data:[list[0][5].num,list[1][5].num,list[2][5].num,list[3][5].num,list[4][5].num,list[5][5].num,list[6][5].num]
+                    data: [list[0][5].num, list[1][5].num, list[2][5].num, list[3][5].num, list[4][5].num, list[5][5].num, list[6][5].num]
                 },
                 {
                     name: '前两天',
@@ -466,7 +568,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#8433FD', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 120]
-                    data:[list[0][4].num,list[1][4].num,list[2][4].num,list[3][4].num,list[4][4].num,list[5][4].num,list[6][4].num]
+                    data: [list[0][4].num, list[1][4].num, list[2][4].num, list[3][4].num, list[4][4].num, list[5][4].num, list[6][4].num]
                 },
                 {
                     name: '前三天',
@@ -475,7 +577,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#E8C212', label: {show: true}}},
                     // data: [120, 132, 101, 134, 90, 230, 210, 90]
-                    data:[list[0][3].num,list[1][3].num,list[2][3].num,list[3][3].num,list[4][3].num,list[5][3].num,list[6][3].num]
+                    data: [list[0][3].num, list[1][3].num, list[2][3].num, list[3][3].num, list[4][3].num, list[5][3].num, list[6][3].num]
                 },
                 {
                     name: '前四天',
@@ -483,7 +585,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#3ECF67', label: {show: true}}},
                     // data: [220, 182, 191, 234, 290, 330, 310, 120]
-                    data:[list[0][2].num,list[1][2].num,list[2][2].num,list[3][2].num,list[4][2].num,list[5][2].num,list[6][2].num]
+                    data: [list[0][2].num, list[1][2].num, list[2][2].num, list[3][2].num, list[4][2].num, list[5][2].num, list[6][2].num]
                 },
                 {
                     name: '前五天',
@@ -491,14 +593,14 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#FD375C', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 340]
-                    data:[list[0][1].num,list[1][1].num,list[2][1].num,list[3][1].num,list[4][1].num,list[5][1].num,list[6][1].num]
+                    data: [list[0][1].num, list[1][1].num, list[2][1].num, list[3][1].num, list[4][1].num, list[5][1].num, list[6][1].num]
                 }, {
                     name: '前六天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FF9019', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 200]
-                    data:[list[0][0].num,list[1][0].num,list[2][0].num,list[3][0].num,list[4][0].num,list[5][0].num,list[6][0].num]
+                    data: [list[0][0].num, list[1][0].num, list[2][0].num, list[3][0].num, list[4][0].num, list[5][0].num, list[6][0].num]
                 },
 
 
@@ -509,10 +611,10 @@ $(function () {
 
     //各机构文化课招生情况
     function course(data) {
-        var i=0,len=data.length,
-            x_data=[],list=[];
-        for(;i<len;i++){
-            var v=data[i];
+        var i = 0, len = data.length,
+            x_data = [], list = [];
+        for (; i < len; i++) {
+            var v = data[i];
             x_data.push(v.agencyName);
             list.push(v.agencyDtoList);
         }
@@ -528,22 +630,22 @@ $(function () {
             },
             legend: {
                 data: [{
-                    name:'当天',
-                    textStyle:{
-                        color:'#fff',
-                        fontSize:11,
-                        padding: [0, 0,0,13],
+                    name: '当天',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 11,
+                        padding: [0, 0, 0, 13],
                     },
                 }, '前一天', '前两天', '前三天', '前四天', '前五天', '前六天'],
                 bottom: '5%',
-                textStyle:{
-                    color:'#fff',
-                    fontSize:11,
-                    padding: [0, 0,0,8],
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 11,
+                    padding: [0, 0, 0, 8],
                 },
-                align: '500' ,
+                align: '500',
                 itemWidth: 40,
-                itemHeight: 22 ,
+                itemHeight: 22,
             },
             grid: {
                 left: '3%',
@@ -553,10 +655,10 @@ $(function () {
             },
             xAxis: [
                 {
-                    name:'画室',
+                    name: '画室',
                     type: 'category',
                     // data: ['北京小泽', '济南小泽', '郑州小泽', '广州一尚', '西安清美', '西安青卓', '北京九鼎', '画室'],
-                    data:x_data,
+                    data: x_data,
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -567,7 +669,7 @@ $(function () {
             yAxis: [
                 {
                     type: 'value',
-                    splitLine: {lineStyle: {color: '#2BB5FF',type: 'dotted'}},
+                    splitLine: {lineStyle: {color: '#2BB5FF', type: 'dotted'}},
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
@@ -584,7 +686,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#19287A', label: {show: true}}},
                     // data: [120, 132, 101, 134, 90, 230, 210, 90]
-                    data:[list[0][6].num,list[1][6].num,list[2][6].num,list[3][6].num,list[4][6].num,list[5][6].num,list[6][6].num]
+                    data: [list[0][6].num, list[1][6].num, list[2][6].num, list[3][6].num, list[4][6].num, list[5][6].num, list[6][6].num]
                 },
                 {
                     name: '前一天',
@@ -592,7 +694,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#39D9D6', label: {show: true}}},
                     // data: [220, 182, 191, 234, 290, 330, 310, 139]
-                    data:[list[0][5].num,list[1][5].num,list[2][5].num,list[3][5].num,list[4][5].num,list[5][5].num,list[6][5].num]
+                    data: [list[0][5].num, list[1][5].num, list[2][5].num, list[3][5].num, list[4][5].num, list[5][5].num, list[6][5].num]
                 },
                 {
                     name: '前两天',
@@ -600,7 +702,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#8433FD', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 120]
-                    data:[list[0][4].num,list[1][4].num,list[2][4].num,list[3][4].num,list[4][4].num,list[5][4].num,list[6][4].num]
+                    data: [list[0][4].num, list[1][4].num, list[2][4].num, list[3][4].num, list[4][4].num, list[5][4].num, list[6][4].num]
                 },
                 {
                     name: '前三天',
@@ -609,7 +711,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#E8C212', label: {show: true}}},
                     // data: [120, 132, 101, 134, 90, 230, 210, 90]
-                    data:[list[0][3].num,list[1][3].num,list[2][3].num,list[3][3].num,list[4][3].num,list[5][3].num,list[6][3].num]
+                    data: [list[0][3].num, list[1][3].num, list[2][3].num, list[3][3].num, list[4][3].num, list[5][3].num, list[6][3].num]
                 },
                 {
                     name: '前四天',
@@ -617,7 +719,7 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#3ECF67', label: {show: true}}},
                     // data: [220, 182, 191, 234, 290, 330, 310, 120]
-                    data:[list[0][2].num,list[1][2].num,list[2][2].num,list[3][2].num,list[4][2].num,list[5][2].num,list[6][2].num]
+                    data: [list[0][2].num, list[1][2].num, list[2][2].num, list[3][2].num, list[4][2].num, list[5][2].num, list[6][2].num]
                 },
                 {
                     name: '前五天',
@@ -625,14 +727,14 @@ $(function () {
                     stack: '广告',
                     itemStyle: {normal: {color: '#FD375C', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 340]
-                    data:[list[0][1].num,list[1][1].num,list[2][1].num,list[3][1].num,list[4][1].num,list[5][1].num,list[6][1].num]
+                    data: [list[0][1].num, list[1][1].num, list[2][1].num, list[3][1].num, list[4][1].num, list[5][1].num, list[6][1].num]
                 }, {
                     name: '前六天',
                     type: 'bar',
                     stack: '广告',
                     itemStyle: {normal: {color: '#FF9019', label: {show: true}}},
                     // data: [150, 232, 201, 154, 190, 330, 410, 200]
-                    data:[list[0][0].num,list[1][0].num,list[2][0].num,list[3][0].num,list[4][0].num,list[5][0].num,list[6][0].num]
+                    data: [list[0][0].num, list[1][0].num, list[2][0].num, list[3][0].num, list[4][0].num, list[5][0].num, list[6][0].num]
                 },
 
 
@@ -719,10 +821,11 @@ $(function () {
                 }],
             legend: {
                 bottom: '3%',
-                textStyle:{
-                    color:'#fff',
-                    fontSize:11
-                }},
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 11
+                }
+            },
             tooltip: {},
             dataset: {
                 source: [
@@ -738,157 +841,229 @@ $(function () {
             },
             xAxis: [
 
-                {type: 'category', gridIndex: 0,axisLine: {
+                {
+                    type: 'category', gridIndex: 0, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },axisLabel: {
-                        interval:0,
+                    }, axisLabel: {
+                        interval: 0,
                         //   rotate:30 ,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 1,axisLine: {
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 1, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 2,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 2, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 3,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 3, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 4,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 4, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 5,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 5, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 6,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 6, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } },
-                {type: 'category', gridIndex: 7,axisLine: {
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                },
+                {
+                    type: 'category', gridIndex: 7, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
                     }, axisLabel: {
-                        interval:0,
-                        fontSize: 8 ,
-                    } }
+                        interval: 0,
+                        fontSize: 8,
+                    }
+                }
             ],
             yAxis: [
-                {gridIndex: 0,axisLine: {
+                {
+                    gridIndex: 0, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 1,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 1, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 2,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 2, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 3,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 3, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 4,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 4, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 5,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 5, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 6,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 6, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },},
-                {gridIndex: 7,axisLine: {
+                    },
+                },
+                {
+                    gridIndex: 7, axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',
                         }
-                    },}
+                    },
+                }
             ],
             grid: [
-                {top: '10%',bottom: '60%',right:'75%',left:'5%'},
-                {top: '10%',bottom: '60%',right:'50%',left:'30%'},
-                {top: '10%',bottom: '60%',right:'25%',left:'55%'},
-                {top: '10%',bottom: '60%',right:'0',left:'80%'},
-                {top: '50%',bottom: '20%',right:'75%',left:'5%'},
-                {top: '50%',bottom: '20%',right:'50%',left:'30%'},
-                {top: '50%',bottom: '20%',right:'25%',left:'55%'},
-                {top: '50%',bottom: '20%',right:'0',left:'80%'}
+                {top: '10%', bottom: '60%', right: '75%', left: '5%'},
+                {top: '10%', bottom: '60%', right: '50%', left: '30%'},
+                {top: '10%', bottom: '60%', right: '25%', left: '55%'},
+                {top: '10%', bottom: '60%', right: '0', left: '80%'},
+                {top: '50%', bottom: '20%', right: '75%', left: '5%'},
+                {top: '50%', bottom: '20%', right: '50%', left: '30%'},
+                {top: '50%', bottom: '20%', right: '25%', left: '55%'},
+                {top: '50%', bottom: '20%', right: '0', left: '80%'}
             ],
             series: [
                 // These series are in the first grid.
-                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 0, yAxisIndex: 0,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
                 // These series are in the second grid.
-                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 1, yAxisIndex: 1,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 2, yAxisIndex: 2,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 3, yAxisIndex: 3,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 4, yAxisIndex: 4,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 4,
+                    yAxisIndex: 4,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 5, yAxisIndex: 5,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 5,
+                    yAxisIndex: 5,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 6, yAxisIndex: 6,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 6,
+                    yAxisIndex: 6,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
 
-                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#F3C938'}}},
-                {type: 'line', xAxisIndex: 7, yAxisIndex: 7,itemStyle: {normal: {color: '#E83751', label: {show: true}}}},
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#7065FB'}}},
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#F3C938'}}},
+                {
+                    type: 'line',
+                    xAxisIndex: 7,
+                    yAxisIndex: 7,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                },
             ]
         };
         myChart.setOption(option);

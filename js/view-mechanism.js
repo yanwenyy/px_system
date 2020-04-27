@@ -50,6 +50,10 @@ $(function () {
     ajax_get("/data/signup/sum?agencyId="+id,function(data){
         ascription(data.data);
     });
+    //招生进度
+    ajax_get("/data/signagnecy/schedu?agencyId="+id,function(data){
+        console.log(data)
+    });
     //整体情况分析
     function totalData(data) {
         var year=data[0].dataTime.split("-")[0],
