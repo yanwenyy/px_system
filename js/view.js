@@ -38,7 +38,6 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
-    getList();
     //整体情况分析
     ajax_get("/data/over/all", function (data) {
         totalData(data.data)
@@ -52,68 +51,66 @@ $(function () {
     //总招生进度
     ajax_get("/data/allschedu", function (res) {
         var data = res.data,
-            html = `
-            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar red-bar inline-block" style="width: ${data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100}%">${(data.sumSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realSum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.studentNum}人</span>
-                                <div class="process-title">总招生进度</div>
-                            </div>
-                            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar blue-bar inline-block" style="width: ${data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100}%"> ${(data.onlineSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realOnlineNum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.onlineNum}人</span>
-                                <div class="process-title">线上</div>
-                            </div>
-                            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar green-bar inline-block" style="width: ${data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100}%">${(data.eduSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realEduNum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.edcactionNum}人</span>
-                                <div class="process-title">教学部</div>
-                            </div>
-                            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar orange-bar inline-block" style="width: ${data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100}%">${(data.pushSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realPusnNum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.pusnNum}人</span>
-                                <div class="process-title">地推</div>
-                            </div>
-                            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar pink-bar inline-block" style="width: ${data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100}%">${(data.studioSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realStudioNum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.studioNum}人</span>
-                                <div class="process-title">画室</div>
-                            </div>
-                            <div class="student-process-list">
-                                <div class="inline-block">
-                                    <div class="process-div">
-                                        <div class="process-bar purple-bar inline-block" style="width:${data.otherSchedu > 1 ? '100' : (data.otherSchedu).toFixed(2) * 100}%">${(data.otherSchedu).toFixed(2) * 100}%</div>
-                                        <span>${data.realOtherNum}人</span>
-                                    </div>
-                                </div>
-                                <span class="inline-block process-num">${data.otherNum}人</span>
-                                <div class="process-title">其他</div>
-                            </div>
-            `;
+            html = '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100)+'%">'+((data.sumSchedu).toFixed(2) * 100)+'% </div>'+
+                                        '<span>'+data.realSum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.studentNum+'人</span>'+
+                                '<div class="process-title">总招生进度</div>'+
+                            '</div>'+
+                            '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100)+'%"> '+((data.onlineSchedu).toFixed(2) * 100)+'% </div>'+
+                                        '<span>'+data.realOnlineNum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.onlineNum+'人</span>'+
+                                '<div class="process-title">线上</div>'+
+                            '</div>'+
+                            '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100)+'%">'+((data.eduSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<span>'+data.realEduNum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.edcactionNum+'人</span>'+
+                                '<div class="process-title">教学部</div>'+
+                            '</div>'+
+                            '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100)+'%">'+((data.pushSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<span>'+data.realPusnNum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.pusnNum+'人</span>'+
+                                '<div class="process-title">地推</div>'+
+                            '</div>'+
+                            '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100)+'%">'+((data.studioSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<span>'+data.realStudioNum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.studioNum+'人</span>'+
+                                '<div class="process-title">画室</div>'+
+                            '</div>'+
+                            '<div class="student-process-list">'+
+                                '<div class="inline-block">'+
+                                    '<div class="process-div">'+
+                                        '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : (data.otherSchedu).toFixed(2) * 100)+'%">'+((data.otherSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<span>'+data.realOtherNum+'人</span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<span class="inline-block process-num">'+data.otherNum+'人</span>'+
+                                '<div class="process-title">其他</div>'+
+                            '</div>';
         $(".process-total").html(html);
 
     });
@@ -166,7 +163,10 @@ $(function () {
     ajax_get("/data/agency/cultural", function (data) {
         course(data.data)
     });
-
+    //数据获取量
+    ajax_get("/data/head/datacollection",function(data){
+        getList(data.data);
+    });
     //整体情况分析
     function totalData(data) {
         var year = data[0].dataTime.split("-")[0],
@@ -744,7 +744,52 @@ $(function () {
     }
 
     //数据获取量
-    function getList() {
+    function getList(res) {
+        console.log(res);
+        var list=res,i=0,len=list.length,title_data=[],
+            source0=[],
+            source1=[],
+            source2=[],
+            source3=[],
+            source4=[],
+            source5=[],
+            source6=[],
+            source7=[];
+        for(;i<len;i++){
+            var v=list[i];
+            title_data.push(v.agencyName);
+            switch (i){
+                case 0:
+                    source0=v.datalist;
+                    break;
+                case 1:
+                    source1=v.datalist;
+                    break;
+                case 2:
+                    source2=v.datalist;
+                    break;
+                case 3:
+                    source3=v.datalist;
+                    break;
+                case 4:
+                    source4=v.datalist;
+                    break;
+                case 5:
+                    source5=v.datalist;
+                    break;
+                case 6:
+                    source6=v.datalist;
+                    break;
+                case 7:
+                    source7=v.datalist;
+                    break;
+            }
+        }
+       var j=0,j_len=source0.length,date_list=[];
+        for(;j<j_len;j++){
+            var v=source0[j],date_v=v.dataTime.split(" ")[0],time_v=date_v.split("-");
+            date_list.push(time_v[1]+"/"+time_v[2])
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('getList'));
         // 指定图表的配置项和数据
@@ -752,7 +797,7 @@ $(function () {
             title: [{
                 text: ''
             }, {
-                subtext: '全部',
+                subtext: title_data[0],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -760,7 +805,7 @@ $(function () {
                 top: '42%',
                 textAlign: 'center'
             }, {
-                subtext: '北京小泽',
+                subtext: title_data[1],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -768,7 +813,7 @@ $(function () {
                 top: '42%',
                 textAlign: 'center'
             }, {
-                subtext: '济南小泽',
+                subtext: title_data[2],
                 subtextStyle: {
                     color: '#2BB6FF'
                 },
@@ -777,7 +822,7 @@ $(function () {
                 textAlign: 'center'
             },
                 {
-                    subtext: '郑州小泽',
+                    subtext: title_data[3],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -785,7 +830,7 @@ $(function () {
                     top: '42%',
                     textAlign: 'center'
                 }, {
-                    subtext: '广州一尚',
+                    subtext: title_data[4],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -793,7 +838,7 @@ $(function () {
                     top: '84%',
                     textAlign: 'center'
                 }, {
-                    subtext: '西安清美',
+                    subtext: title_data[5],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -802,7 +847,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: '西安青卓',
+                    subtext: title_data[6],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -811,7 +856,7 @@ $(function () {
                     textAlign: 'center'
                 },
                 {
-                    subtext: '北京九鼎',
+                    subtext: title_data[7],
                     subtextStyle: {
                         color: '#2BB6FF'
                     },
@@ -830,13 +875,20 @@ $(function () {
             dataset: {
                 source: [
                     ['product', '数据获取量', '有效数据量', '有效率'],
-                    ['0401', 41.1, 30.4, 65.1],
+                    ['0401', 86.5, 92.1, 85.7],
                     ['0402', 86.5, 92.1, 85.7],
-                    ['0403', 24.1, 67.2, 79.5],
-                    ['0404', 24.1, 67.2, 79.5],
-                    ['0405', 24.1, 67.2, 79.5],
-                    ['0406', 24.1, 67.2, 79.5],
-                    ['0407', 24.1, 67.2, 79.5]
+                    ['0403', 86.5, 92.1, 85.7],
+                    ['0404', 86.5, 92.1, 85.7],
+                    ['0405', 86.5, 92.1, 85.7],
+                    ['0406', 86.5, 92.1, 85.7],
+                    ['0407', 86.5, 92.1, 85.7],
+                    // [date_list[0], source0[0].dataAmount, source0.effectiveData, source0.efficient],
+                    // [date_list[1], source1.dataAmount, source1.effectiveData, source1.efficient],
+                    // [date_list[2], source2.dataAmount, source2.effectiveData, source2.efficient],
+                    // [date_list[3], source3.dataAmount, source3.effectiveData, source3.efficient],
+                    // [date_list[4], source4.dataAmount, source4.effectiveData, source4.efficient],
+                    // [date_list[5], source5.dataAmount, source5.effectiveData, source5.efficient],
+                    // [date_list[6], source6.dataAmount, source6.effectiveData, source6.efficient]
                 ]
             },
             xAxis: [

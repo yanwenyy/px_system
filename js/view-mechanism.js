@@ -51,8 +51,73 @@ $(function () {
         ascription(data.data);
     });
     //招生进度
-    ajax_get("/data/signagnecy/schedu?agencyId="+id,function(data){
-        console.log(data)
+    ajax_get("/data/signagnecy/schedu?agencyId="+id,function(res){
+        var data = res.data,
+            html = '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">总招生进度</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100)+'%">'+((data.sumSchedu).toFixed(2) * 100)+'% </div>'+
+                '<span>'+data.realSum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.studentNum+'人</span>'+
+                '</div>'+
+                '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">线上</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100)+'%"> '+((data.onlineSchedu).toFixed(2) * 100)+'% </div>'+
+                '<span>'+data.realOnlineNum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.onlineNum+'人</span>'+
+                '</div>'+
+                '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">教学部</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100)+'%">'+((data.eduSchedu).toFixed(2) * 100)+'%</div>'+
+                '<span>'+data.realEduNum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.edcactionNum+'人</span>'+
+                '</div>'+
+                '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">地推</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100)+'%">'+((data.pushSchedu).toFixed(2) * 100)+'%</div>'+
+                '<span>'+data.realPusnNum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.pusnNum+'人</span>'+
+                '</div>'+
+                '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">画室</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100)+'%">'+((data.studioSchedu).toFixed(2) * 100)+'%</div>'+
+                '<span>'+data.realStudioNum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.studioNum+'人</span>'+
+                '</div>'+
+                '<div class="student-process-list">'+
+                '<div class="inline-block">'+
+                '<div class="process-title inline-block">其他</div>'+
+                '<div class="process-div inline-block">'+
+                '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : Number(data.otherSchedu).toFixed(2) * 100)+'%">'+(Number(data.otherSchedu).toFixed(2) * 100)+'%</div>'+
+                '<span>'+data.realOtherNum+'人</span>'+
+                '</div>'+
+                '</div>'+
+                '<span class="inline-block process-num">'+data.otherNum+'人</span>'+
+                '</div>';
+        $(".student-process").html(html);
+    });
+    //数据获取量
+    ajax_get("/data/single/data?agencyId="+id,function(data){
+        getList(data.data);
     });
     //整体情况分析
     function totalData(data) {
@@ -312,7 +377,7 @@ $(function () {
     }
 
     //数据获取量
-    function getList() {
+    function getList(res) {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('getList'));
         // 指定图表的配置项和数据
