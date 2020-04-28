@@ -35,3 +35,4 @@
 		.inline-block{display: inline-block}
 		.box-sizing{box-sizing: border-box}
 		input,textarea{outline: none}
+		.out{display: none}

@@ -39,9 +39,20 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
-    student();
-    course();
-    getList();
+    //数据概览
+    ajax_get("/data/data/overview?agencyId="+id, function (data) {
+        var datas=data.data;
+        $(".signupDayNum").html(datas.signupDayNum);
+        $(".signupMonthNum").html(datas.signupMonthNum);
+        $(".signupSum").html(datas.signupSum);
+        $(".frontMoneyNum").html(datas.frontMoneyNum);
+        $(".fullMoneyNum").html(datas.signupDayNum);
+        $(".refundNum").html(datas.refundNum);
+        $(".refundMoney").html(datas.refundMoney);
+        $(".cultyualDayNum").html(datas.cultyualDayNum);
+        $(".cilturalMonthNum").html(datas.cilturalMonthNum);
+        $(".contactRate").html((datas.contactRate*100).toFixed(2)+"%");
+    });
     //整体情况分析
     ajax_get("/data/over/all?agencyId="+id,function(data){
         totalData(data.data)
@@ -57,7 +68,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">总招生进度</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100)+'%">'+((data.sumSchedu).toFixed(2) * 100)+'% </div>'+
+                '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu* 100).toFixed(2) )+'%">'+((data.sumSchedu* 100).toFixed(2) )+'% </div>'+
                 '<span>'+data.realSum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -67,7 +78,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">线上</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100)+'%"> '+((data.onlineSchedu).toFixed(2) * 100)+'% </div>'+
+                '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu * 100).toFixed(2))+'%"> '+((data.onlineSchedu* 100).toFixed(2) )+'% </div>'+
                 '<span>'+data.realOnlineNum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -77,7 +88,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">教学部</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100)+'%">'+((data.eduSchedu).toFixed(2) * 100)+'%</div>'+
+                '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu * 100).toFixed(2))+'%">'+((data.eduSchedu * 100).toFixed(2))+'%</div>'+
                 '<span>'+data.realEduNum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -87,7 +98,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">地推</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100)+'%">'+((data.pushSchedu).toFixed(2) * 100)+'%</div>'+
+                '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu* 100).toFixed(2) )+'%">'+((data.pushSchedu * 100).toFixed(2))+'%</div>'+
                 '<span>'+data.realPusnNum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -97,7 +108,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">画室</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100)+'%">'+((data.studioSchedu).toFixed(2) * 100)+'%</div>'+
+                '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu* 100).toFixed(2) )+'%">'+((data.studioSchedu * 100).toFixed(2))+'%</div>'+
                 '<span>'+data.realStudioNum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -107,7 +118,7 @@ $(function () {
                 '<div class="inline-block">'+
                 '<div class="process-title inline-block">其他</div>'+
                 '<div class="process-div inline-block">'+
-                '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : Number(data.otherSchedu).toFixed(2) * 100)+'%">'+(Number(data.otherSchedu).toFixed(2) * 100)+'%</div>'+
+                '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : (data.otherSchedu * 100).toFixed(2))+'%">'+((data.otherSchedu * 100).toFixed(2))+'%</div>'+
                 '<span>'+data.realOtherNum+'人</span>'+
                 '</div>'+
                 '</div>'+
@@ -115,9 +126,33 @@ $(function () {
                 '</div>';
         $(".student-process").html(html);
     });
+    //各机构招生情况
+    ajax_get("/data/selfagency/singup?agencyId="+id,function(data){
+        student(data.data)
+    });
+    //各机构文化课招生情况
+    ajax_get("/data/selfagency/cultural?agencyId="+id,function(data){
+        course(data.data)
+    });
     //数据获取量
     ajax_get("/data/single/data?agencyId="+id,function(data){
         getList(data.data);
+    });
+    //百度渠道获取数据
+    ajax_get("/data/baidu/data",function(data){
+        var list=data.data,i=0,len=list.length,html='';
+        for(;i<len;i++){
+            var v=list[i];
+            html+=' <tr>\n' +
+                '<td>'+v.agencyName+'</td>\n' +
+                '<td>'+v.dataAmount+'</td>\n' +
+                '<td>'+v.effectiveData+'</td>\n' +
+                '<td>'+(v.effectiveRate*100).toFixed(2)+'%</td>\n' +
+                '<td>'+v.todayConsumeMoney+'</td>\n' +
+                '<td>'+(v.effective*100).toFixed(2)+'</td>\n' +
+                '</tr>'
+        }
+        $("tbody").html(html)
     });
     //整体情况分析
     function totalData(data) {
@@ -259,7 +294,13 @@ $(function () {
     }
 
     //各机构招生情况
-    function student() {
+    function student(data) {
+        var i=0,len=data.length,date=[],list=[];
+        for(;i<len;i++){
+            var v=data[i],time=v.dataTime.split(" ")[0].split("-");
+            date.push(time[1]+"/"+time[2]);
+            list.push(v.sumNum);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('student'));
         // 指定图表的配置项和数据
@@ -280,7 +321,7 @@ $(function () {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['04/10', '04/11', '04/12', '04/13', '04/14', '04/15', '04/16'],
+                    data: date,
                     axisTick: {
                         alignWithLabel: true
                     },
@@ -309,7 +350,7 @@ $(function () {
                     name: '直接访问',
                     type: 'bar',
                     barWidth: '40%',
-                    data: [10, 52, 200, 334, 390, 330, 220]
+                    data: list
                 }
             ]
         };
@@ -318,7 +359,13 @@ $(function () {
     }
 
     //各机构文化课招生情况
-    function course() {
+    function course(data) {
+        var i=0,len=data.length,date=[],list=[];
+        for(;i<len;i++){
+            var v=data[i],time=v.dataTime.split(" ")[0].split("-");
+            date.push(time[1]+"/"+time[2]);
+            list.push(v.enterNum);
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('course'));
         // 指定图表的配置项和数据
@@ -339,7 +386,7 @@ $(function () {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['04/10', '04/11', '04/12', '04/13', '04/14', '04/15', '04/16'],
+                    data: date,
                     axisTick: {
                         alignWithLabel: true
                     },
@@ -368,7 +415,7 @@ $(function () {
                     name: '直接访问',
                     type: 'bar',
                     barWidth: '40%',
-                    data: [10, 52, 200, 334, 390, 330, 220]
+                    data: list
                 }
             ]
         };
@@ -378,6 +425,11 @@ $(function () {
 
     //数据获取量
     function getList(res) {
+        var i=0,len=res.length,date_list=[];
+        for(;i<len;i++){
+            var v=res[i],date_v=v.dataTime.split(" ")[0],time_v=date_v.split("-");
+            date_list.push(time_v[1]+"/"+time_v[2])
+        }
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('getList'));
         // 指定图表的配置项和数据
@@ -394,14 +446,13 @@ $(function () {
             dataset: {
                 source: [
                     ['product', '数据获取量', '有效数据量', '有效率'],
-                    ['1', 41.1, 30.4, 65.1],
-                    ['2', 86.5, 92.1, 85.7],
-                    ['3', 24.1, 67.2, 79.5],
-                    ['4', 24.1, 67.2, 79.5],
-                    ['5', 24.1, 67.2, 79.5],
-                    ['6', 24.1, 67.2, 79.5],
-                    ['7', 24.1, 67.2, 79.5],
-                    ['8', 24.1, 67.2, 79.5],
+                    [date_list[0], res[0].dataAmount, res[0].effectiveData,res[0].efficient*100],
+                    [date_list[1], res[1].dataAmount, res[1].effectiveData,res[1].efficient*100],
+                    [date_list[2], res[2].dataAmount, res[2].effectiveData,res[2].efficient*100],
+                    [date_list[3], res[3].dataAmount, res[3].effectiveData,res[3].efficient*100],
+                    [date_list[4], res[4].dataAmount, res[4].effectiveData,res[4].efficient*100],
+                    [date_list[5], res[5].dataAmount, res[5].effectiveData,res[5].efficient*100],
+                    [date_list[6], res[6].dataAmount, res[6].effectiveData,res[6].efficient*100],
                 ]
             },
             xAxis: [
@@ -419,9 +470,9 @@ $(function () {
                 {
                     type:'value',
                     name:'人数',
-                    min: 0,
-                    max:300,
-                    interval: 50,
+                    // min: 0,
+                    // max:300,
+                    // interval: 50,
                     splitLine: {lineStyle: {color: '#2BB5FF', type: 'dotted'}},
                     axisLine: {
                         lineStyle: {
@@ -452,9 +503,8 @@ $(function () {
                 {
                     type: 'line',
                     xAxisIndex: 0,
-                    yAxisIndex: 0,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}},
                     yAxisIndex: 1,
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value[3]>0?c.value[3].toFixed(2):0)+"%";}}}},
                 },
 
             ]

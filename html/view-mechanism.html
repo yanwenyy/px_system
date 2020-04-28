@@ -29,43 +29,43 @@
                         <ul>
                             <li>
                                 <span>当日新增学员</span>
-                                <span>690</span>
+                                <span class="signupDayNum"></span>
                             </li>
                             <li>
                                 <span>当月新增学员</span>
-                                <span>690</span>
+                                <span class="signupMonthNum"></span>
                             </li>
                             <li>
                                 <span>总招生数量</span>
-                                <span>690</span>
+                                <span class="signupSum"></span>
                             </li>
                             <li>
                                 <span>累计定金人数</span>
-                                <span>690</span>
+                                <span class="frontMoneyNum"></span>
                             </li>
                             <li>
                                 <span>累计新增全款人数</span>
-                                <span>690</span>
+                                <span class="fullMoneyNum"></span>
                             </li>
                             <li>
                                 <span>累计退费人数</span>
-                                <span>690</span>
+                                <span class="refundNum"></span>
                             </li>
                             <li>
                                 <span>累计退费金额</span>
-                                <span>690</span>
+                                <span class="refundMoney"></span>
                             </li>
                             <li>
                                 <span>当日文化课报名人数</span>
-                                <span>690</span>
+                                <span class="cultyualDayNum"></span>
                             </li>
                             <li>
                                 <span>当月文化课报名人数</span>
-                                <span>690</span>
+                                <span class="cilturalMonthNum"></span>
                             </li>
                             <li>
                                 <span>联报率%</span>
-                                <span>690</span>
+                                <span class="contactRate"></span>
                             </li>
                         </ul>
                     </div>
@@ -185,6 +185,7 @@
                     <div id="getList" class="box-sizing inline-block echarts-div2"></div>
                     <div id="baiduList" class="box-sizing inline-block">
                         <table>
+                            <thead>
                             <tr>
                                 <th>画室</th>
                                 <th>总数据(元)</th>
@@ -193,62 +194,65 @@
                                 <th>今日消费(元)</th>
                                 <th>单个有效数据成本(元)</th>
                             </tr>
-                            <tr>
-                                <td>北京小泽</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>济南小泽</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>郑州小泽</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>广州一尚</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>西安清美</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>西安青卓</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>北京九鼎</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>52.67%</td>
-                                <td>6000</td>
-                                <td>2000</td>
-                            </tr>
+                            </thead>
+                            <tbody class>
+                            <!--<tr>-->
+                            <!--<td>北京小泽</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>济南小泽</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>郑州小泽</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>广州一尚</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>西安清美</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>西安青卓</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>北京九鼎</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>50</td>-->
+                            <!--<td>52.67%</td>-->
+                            <!--<td>6000</td>-->
+                            <!--<td>2000</td>-->
+                            <!--</tr>-->
+                            </tbody>
                         </table>
                         <div class="baiduList-title">百度渠道获取数据</div>
                     </div>

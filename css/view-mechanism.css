@@ -108,20 +108,27 @@ body {
     width: 88%;
 }
 .process-div {
-    width: 80%;
+    width: 75%;
     height: 19px;
     background: #19287A;
     vertical-align: top;
     margin-right: 10px;
     color:#fff;
     font-size: 12px;
+    position: relative;
+}
+.process-div>span{
+    position: absolute;
+    top:0;
+    right:5px;
 }
 .process-bar {
     height: 100%;
     color:#fff;
     font-size: 12px;
-    padding-right: 5.5px;
-    text-align: right;
+    padding-left: 5.5px;
+    text-align: left;
+    white-space: nowrap;
 }
 .process-num{
     vertical-align: top;
@@ -134,8 +141,9 @@ body {
 .process-title{
     font-size: 12px;
     color:#6EC2FD;
-    width: 15%;
+    width: 22%;
     text-align: right;
+    padding-right: 10px;
 }
 .red-bar{
     background:linear-gradient(92deg,rgba(227,47,47,1) 0%,rgba(244,62,96,1) 100%);
@@ -211,7 +219,7 @@ body {
         width: 80%;
     }
     .process-div{
-        width: 67%;
+        width: 62%;
     }
     .box-div-title2{
         width: 330px

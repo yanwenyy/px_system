@@ -38,6 +38,20 @@ $(function () {
     setInterval(function () {
         time()
     }, 1000);
+    //数据概览
+    ajax_get("/data/data/overview", function (data) {
+        var datas=data.data;
+        $(".signupDayNum").html(datas.signupDayNum);
+        $(".signupMonthNum").html(datas.signupMonthNum);
+        $(".signupSum").html(datas.signupSum);
+        $(".frontMoneyNum").html(datas.frontMoneyNum);
+        $(".fullMoneyNum").html(datas.signupDayNum);
+        $(".refundNum").html(datas.refundNum);
+        $(".refundMoney").html(datas.refundMoney);
+        $(".cultyualDayNum").html(datas.cultyualDayNum);
+        $(".cilturalMonthNum").html(datas.cilturalMonthNum);
+        $(".contactRate").html((datas.contactRate*100).toFixed(2)+"%");
+    });
     //整体情况分析
     ajax_get("/data/over/all", function (data) {
         totalData(data.data)
@@ -54,7 +68,7 @@ $(function () {
             html = '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu).toFixed(2) * 100)+'%">'+((data.sumSchedu).toFixed(2) * 100)+'% </div>'+
+                                        '<div class="process-bar red-bar inline-block" style="width: '+(data.sumSchedu > 1 ? '100' : (data.sumSchedu* 100).toFixed(2) )+'%">'+((data.sumSchedu * 100).toFixed(2))+'% </div>'+
                                         '<span>'+data.realSum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -64,7 +78,7 @@ $(function () {
                             '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu).toFixed(2) * 100)+'%"> '+((data.onlineSchedu).toFixed(2) * 100)+'% </div>'+
+                                        '<div class="process-bar blue-bar inline-block" style="width: '+(data.onlineSchedu > 1 ? '100' : (data.onlineSchedu * 100).toFixed(2))+'%"> '+((data.onlineSchedu * 100).toFixed(2))+'% </div>'+
                                         '<span>'+data.realOnlineNum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -74,7 +88,7 @@ $(function () {
                             '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu).toFixed(2) * 100)+'%">'+((data.eduSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<div class="process-bar green-bar inline-block" style="width: '+(data.eduSchedu > 1 ? '100' : (data.eduSchedu * 100).toFixed(2))+'%">'+((data.eduSchedu * 100).toFixed(2))+'%</div>'+
                                         '<span>'+data.realEduNum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -84,7 +98,7 @@ $(function () {
                             '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu).toFixed(2) * 100)+'%">'+((data.pushSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<div class="process-bar orange-bar inline-block" style="width: '+(data.pushSchedu > 1 ? '100' : (data.pushSchedu * 100).toFixed(2))+'%">'+((data.pushSchedu * 100).toFixed(2))+'%</div>'+
                                         '<span>'+data.realPusnNum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -94,7 +108,7 @@ $(function () {
                             '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu).toFixed(2) * 100)+'%">'+((data.studioSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<div class="process-bar pink-bar inline-block" style="width: '+(data.studioSchedu > 1 ? '100' : (data.studioSchedu* 100).toFixed(2) )+'%">'+((data.studioSchedu * 100).toFixed(2))+'%</div>'+
                                         '<span>'+data.realStudioNum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -104,7 +118,7 @@ $(function () {
                             '<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : (data.otherSchedu).toFixed(2) * 100)+'%">'+((data.otherSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<div class="process-bar purple-bar inline-block" style="width: '+(data.otherSchedu > 1 ? '100' : (data.otherSchedu* 100).toFixed(2) )+'%">'+((data.otherSchedu* 100).toFixed(2) )+'%</div>'+
                                         '<span>'+data.realOtherNum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -116,7 +130,7 @@ $(function () {
     });
     //机构招生进度
     ajax_get("/data/allagnecy/schedu", function (data) {
-        var list=data.data,i=0,len=list.length,html='';
+        var list=data.data,i=0,len=list.length,html='',out='';
         for(;i<len;i++){
             var v=list[i],color='';
             switch (i){
@@ -142,10 +156,11 @@ $(function () {
                     color='purple-bar';
                     break;
             }
+            out=v.sumSchedu>0?'':'out';
             html+='<div class="student-process-list">'+
                                 '<div class="inline-block">'+
                                     '<div class="process-div">'+
-                                        '<div class="process-bar '+color+' inline-block" style="width: '+(v.sumSchedu > 1 ? '100' : (v.sumSchedu).toFixed(2) * 100)+'%">'+((v.sumSchedu).toFixed(2) * 100)+'%</div>'+
+                                        '<div class="process-bar '+color+" "+out+' inline-block" style="width: '+(v.sumSchedu > 1 ? '100' : (v.sumSchedu* 100).toFixed(2) )+'%">'+(v.sumSchedu > 0 ? (v.sumSchedu* 100).toFixed(2)+"%" : '' )+'</div>'+
                                         '<span>'+v.realSum+'人</span>'+
                                     '</div>'+
                                 '</div>'+
@@ -166,6 +181,22 @@ $(function () {
     //数据获取量
     ajax_get("/data/head/datacollection",function(data){
         getList(data.data);
+    });
+    //百度渠道获取数据
+    ajax_get("/data/baidu/data",function(data){
+        var list=data.data,i=0,len=list.length,html='';
+        for(;i<len;i++){
+            var v=list[i];
+            html+=' <tr>\n' +
+                '<td>'+v.agencyName+'</td>\n' +
+                '<td>'+v.dataAmount+'</td>\n' +
+                '<td>'+v.effectiveData+'</td>\n' +
+                '<td>'+(v.effectiveRate*100).toFixed(2)+'%</td>\n' +
+                '<td>'+v.todayConsumeMoney+'</td>\n' +
+                '<td>'+(v.effective*100).toFixed(2)+'</td>\n' +
+                '</tr>'
+        }
+        $("tbody").html(html)
     });
     //整体情况分析
     function totalData(data) {
@@ -745,7 +776,6 @@ $(function () {
 
     //数据获取量
     function getList(res) {
-        console.log(res);
         var list=res,i=0,len=list.length,title_data=[],
             source0=[],
             source1=[],
@@ -869,28 +899,29 @@ $(function () {
                 textStyle: {
                     color: '#fff',
                     fontSize: 11
-                }
+                },
+                data:['数据获取量', '有效数据量', '有效率']
             },
             tooltip: {},
-            dataset: {
-                source: [
-                    ['product', '数据获取量', '有效数据量', '有效率'],
-                    ['0401', 86.5, 92.1, 85.7],
-                    ['0402', 86.5, 92.1, 85.7],
-                    ['0403', 86.5, 92.1, 85.7],
-                    ['0404', 86.5, 92.1, 85.7],
-                    ['0405', 86.5, 92.1, 85.7],
-                    ['0406', 86.5, 92.1, 85.7],
-                    ['0407', 86.5, 92.1, 85.7],
-                    // [date_list[0], source0[0].dataAmount, source0.effectiveData, source0.efficient],
-                    // [date_list[1], source1.dataAmount, source1.effectiveData, source1.efficient],
-                    // [date_list[2], source2.dataAmount, source2.effectiveData, source2.efficient],
-                    // [date_list[3], source3.dataAmount, source3.effectiveData, source3.efficient],
-                    // [date_list[4], source4.dataAmount, source4.effectiveData, source4.efficient],
-                    // [date_list[5], source5.dataAmount, source5.effectiveData, source5.efficient],
-                    // [date_list[6], source6.dataAmount, source6.effectiveData, source6.efficient]
-                ]
-            },
+            // dataset: {
+            //     source: [
+            //         // ['product', '数据获取量', '有效数据量', '有效率'],
+            //         // ['0401', 86.5, 92.1, 85.7],
+            //         // ['0402', 86.5, 92.1, 85.7],
+            //         // ['0403', 86.5, 92.1, 85.7],
+            //         // ['0404', 86.5, 92.1, 85.7],
+            //         // ['0405', 86.5, 92.1, 85.7],
+            //         // ['0406', 86.5, 92.1, 85.7],
+            //         // ['0407', 86.5, 92.1, 85.7],
+            //         // [date_list[0], source0[0].dataAmount, source0.effectiveData, source0.efficient],
+            //         // [date_list[1], source1.dataAmount, source1.effectiveData, source1.efficient],
+            //         // [date_list[2], source2.dataAmount, source2.effectiveData, source2.efficient],
+            //         // [date_list[3], source3.dataAmount, source3.effectiveData, source3.efficient],
+            //         // [date_list[4], source4.dataAmount, source4.effectiveData, source4.efficient],
+            //         // [date_list[5], source5.dataAmount, source5.effectiveData, source5.efficient],
+            //         // [date_list[6], source6.dataAmount, source6.effectiveData, source6.efficient]
+            //     ]
+            // },
             xAxis: [
 
                 {
@@ -902,7 +933,8 @@ $(function () {
                         interval: 0,
                         //   rotate:30 ,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 1, axisLine: {
@@ -912,7 +944,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 2, axisLine: {
@@ -922,7 +955,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 3, axisLine: {
@@ -932,7 +966,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 4, axisLine: {
@@ -942,7 +977,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 5, axisLine: {
@@ -952,7 +988,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 6, axisLine: {
@@ -962,7 +999,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 },
                 {
                     type: 'category', gridIndex: 7, axisLine: {
@@ -972,7 +1010,8 @@ $(function () {
                     }, axisLabel: {
                         interval: 0,
                         fontSize: 8,
-                    }
+                    },
+                    data:[date_list[0],date_list[1],date_list[2],date_list[3],date_list[4],date_list[5],date_list[6]]
                 }
             ],
             yAxis: [
@@ -1046,93 +1085,94 @@ $(function () {
             series: [
                 // These series are in the first grid.
                 {type: 'bar',name:'数据获取量', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#7065FB'}},
-                data:[
-                    {name:date_list[0],value:source0[0].dataAmount},
-                    {name:date_list[1],value:source0[1].dataAmount},
-                    {name:date_list[2],value:source0[2].dataAmount},
-                    {name:date_list[3],value:source0[3].dataAmount},
-                    {name:date_list[4],value:source0[4].dataAmount},
-                    {name:date_list[5],value:source0[5].dataAmount},
-                    {name:date_list[6],value:source0[6].dataAmount}
-                        ]},
+                    data:[source0[0].dataAmount,source0[1].dataAmount,source0[2].dataAmount,source0[3].dataAmount,source0[4].dataAmount,source0[5].dataAmount,source0[6].dataAmount]},
                 {type: 'bar',name:'有效数据量', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#F3C938'}},
-                    data:[
-                        {name:date_list[0],value:source0[0].effectiveData},
-                        {name:date_list[1],value:source0[1].effectiveData},
-                        {name:date_list[2],value:source0[2].effectiveData},
-                        {name:date_list[3],value:source0[3].effectiveData},
-                        {name:date_list[4],value:source0[4].effectiveData},
-                        {name:date_list[5],value:source0[5].effectiveData},
-                        {name:date_list[6],value:source0[6].effectiveData}
-                    ]},
-                {
-                    type: 'line',
-                    xAxisIndex: 0,
-                    yAxisIndex: 0,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
-                },
+                    data:[source0[0].effectiveData,source0[1].effectiveData,source0[2].effectiveData,source0[3].effectiveData,source0[4].effectiveData,source0[5].effectiveData,source0[6].effectiveData]},
+                {type: 'line', name:'有效率', xAxisIndex: 0, yAxisIndex: 0, itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source0[0].efficient*100,source0[1].efficient*100,source0[2].efficient*100,source0[3].efficient*100,source0[4].efficient*100,source0[5].efficient*100,source0[6].efficient*100]},
                 // These series are in the second grid.
-                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source1[0].dataAmount,source1[1].dataAmount,source1[2].dataAmount,source1[3].dataAmount,source1[4].dataAmount,source1[5].dataAmount,source1[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 1, yAxisIndex: 1, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source1[0].effectiveData,source1[1].effectiveData,source1[2].effectiveData,source1[3].effectiveData,source1[4].effectiveData,source1[5].effectiveData,source1[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source1[0].efficient*100,source1[1].efficient*100,source1[2].efficient*100,source1[3].efficient*100,source1[4].efficient*100,source1[5].efficient*100,source1[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source2[0].dataAmount,source2[1].dataAmount,source2[2].dataAmount,source2[3].dataAmount,source2[4].dataAmount,source2[5].dataAmount,source2[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 2, yAxisIndex: 2, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source2[0].effectiveData,source2[1].effectiveData,source2[2].effectiveData,source2[3].effectiveData,source2[4].effectiveData,source2[5].effectiveData,source2[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source2[0].efficient*100,source2[1].efficient*100,source2[2].efficient*100,source2[3].efficient*100,source2[4].efficient*100,source2[5].efficient*100,source2[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source3[0].dataAmount,source3[1].dataAmount,source3[2].dataAmount,source3[3].dataAmount,source3[4].dataAmount,source3[5].dataAmount,source3[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 3, yAxisIndex: 3, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source3[0].effectiveData,source3[1].effectiveData,source3[2].effectiveData,source3[3].effectiveData,source3[4].effectiveData,source3[5].effectiveData,source3[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 3,
                     yAxisIndex: 3,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source3[0].efficient*100,source3[1].efficient*100,source3[2].efficient*100,source3[3].efficient*100,source3[4].efficient*100,source3[5].efficient*100,source3[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source4[0].dataAmount,source4[1].dataAmount,source4[2].dataAmount,source4[3].dataAmount,source4[4].dataAmount,source4[5].dataAmount,source4[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 4, yAxisIndex: 4, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source4[0].effectiveData,source4[1].effectiveData,source4[2].effectiveData,source4[3].effectiveData,source4[4].effectiveData,source4[5].effectiveData,source4[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 4,
                     yAxisIndex: 4,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source4[0].efficient*100,source4[1].efficient*100,source4[2].efficient*100,source4[3].efficient*100,source4[4].efficient*100,source4[5].efficient*100,source4[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source5[0].dataAmount,source5[1].dataAmount,source5[2].dataAmount,source5[3].dataAmount,source5[4].dataAmount,source5[5].dataAmount,source5[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 5, yAxisIndex: 5, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source5[0].effectiveData,source5[1].effectiveData,source5[2].effectiveData,source5[3].effectiveData,source5[4].effectiveData,source5[5].effectiveData,source5[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 5,
                     yAxisIndex: 5,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source5[0].efficient*100,source5[1].efficient*100,source5[2].efficient*100,source5[3].efficient*100,source5[4].efficient*100,source5[5].efficient*100,source5[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source6[0].dataAmount,source6[1].dataAmount,source6[2].dataAmount,source6[3].dataAmount,source6[4].dataAmount,source6[5].dataAmount,source6[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 6, yAxisIndex: 6, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source6[0].effectiveData,source6[1].effectiveData,source6[2].effectiveData,source6[3].effectiveData,source6[4].effectiveData,source6[5].effectiveData,source6[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 6,
                     yAxisIndex: 6,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source6[0].efficient*100,source6[1].efficient*100,source6[2].efficient*100,source6[3].efficient*100,source6[4].efficient*100,source6[5].efficient*100,source6[6].efficient*100]
                 },
 
-                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#7065FB'}}},
-                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#F3C938'}}},
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#7065FB'}},
+                    data:[source7[0].dataAmount,source7[1].dataAmount,source7[2].dataAmount,source7[3].dataAmount,source7[4].dataAmount,source7[5].dataAmount,source7[6].dataAmount]},
+                {type: 'bar', xAxisIndex: 7, yAxisIndex: 7, itemStyle: {normal: {color: '#F3C938'}},
+                    data:[source7[0].effectiveData,source7[1].effectiveData,source7[2].effectiveData,source7[3].effectiveData,source7[4].effectiveData,source7[5].effectiveData,source7[6].effectiveData]},
                 {
                     type: 'line',
                     xAxisIndex: 7,
                     yAxisIndex: 7,
-                    itemStyle: {normal: {color: '#E83751', label: {show: true}}}
+                    itemStyle: {normal: {color: '#E83751', label: {show: true,formatter:function(c){return (c.value>0?c.value.toFixed(2):0)+"%";}}}},
+                    data:[source7[0].efficient*100,source7[1].efficient*100,source7[2].efficient*100,source7[3].efficient*100,source7[4].efficient*100,source7[5].efficient*100,source7[6].efficient*100]
                 },
             ]
         };

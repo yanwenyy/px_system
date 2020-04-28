@@ -115,13 +115,21 @@ body {
     margin-right: 10px;
     color:#fff;
     font-size: 12px;
+    position: relative;
+}
+.process-div>span{
+    position: absolute;
+    top:0;
+    right:5px;
 }
 .process-bar {
     height: 100%;
     color:#fff;
     font-size: 12px;
-    padding-right: 5.5px;
-    text-align: right;
+    padding-left: 5.5px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 .process-num{
     vertical-align: top;
