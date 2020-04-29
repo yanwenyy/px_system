@@ -2,7 +2,7 @@
 const http_url={
     formal_url:"http://123.57.42.98:8080/px_edu",//正式
     test_url:"http://123.57.42.98:8080/px_edu",//测试
-    Socket_url:"ws://123.57.42.98:8080/px_edu/imserver/lxb",
+    Socket_url:"ws://123.57.42.98:8080/px_edu/imserver/",
     url:"http://123.57.42.98:8080/px_edu"
 };
 function GetQueryString(name)
