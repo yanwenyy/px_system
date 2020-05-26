@@ -514,7 +514,7 @@ $(function () {
             x_data.push(v.agencyName);
             list.push(v.agencyDtoList);
         }
-
+        console.log(x_data)
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('student'));
         // 指定图表的配置项和数据
@@ -561,6 +561,10 @@ $(function () {
                             color: '#2BB5FF',
                         }
                     },
+                    axisLabel: {
+                        interval:0,
+                        rotate:40
+                    }
                 }
             ],
             yAxis: [
@@ -695,6 +699,10 @@ $(function () {
                             color: '#2BB5FF',
                         }
                     },
+                    axisLabel: {
+                        interval:0,
+                        rotate:40
+                    }
                 }
             ],
             yAxis: [

@@ -50,13 +50,13 @@ $(function () {
     }
 
     function getData(message) {
-        // console.log(message)
+        console.log(message)
         var datas = JSON.parse(message);
         $(".signupDayNum").html(datas.signupDayNum);
         $(".signupMonthNum").html(datas.signupMonthNum);
         $(".signupSum").html(datas.signupSum);
         $(".frontMoneyNum").html(datas.frontMoneyNum);
-        $(".fullMoneyNum").html(datas.signupDayNum);
+        $(".fullMoneyNum").html(datas.fullMoneyNum);
         $(".refundNum").html(datas.refundNum);
         $(".refundMoney").html(datas.refundMoney);
         $(".cultyualDayNum").html(datas.cultyualDayNum);
