@@ -1,7 +1,7 @@
 $(function () {
     var id = GetQueryString("id");
     var socket = []; //websocket对象数组
-    var lockReconnect = false;  //避免ws重复连接
+
     function connect(options) {
         try{
             if ('WebSocket' in window) {
@@ -11,15 +11,15 @@ $(function () {
             }
             socket[options].onerror = function () {
                 reconnect(options);
-                console.log("send error！");
+                // console.log("send error！");
             };
             socket[options].onopen = function () {
-                heartCheck.reset().start(socket[options]);      //心跳检测重置
-                console.log("llws连接成功!"+new Date().toUTCString());
+                // heartCheck.reset().start(socket[options]);      //心跳检测重置
+                // console.log("llws连接成功!"+new Date().toUTCString());
                 console.log("connection success！")
             };
             socket[options].onmessage = function (event) {
-                heartCheck.reset().start(socket[options]);      //拿到任何消息都说明当前连接是正常的
+                // heartCheck.reset().start(socket[options]);      //拿到任何消息都说明当前连接是正常的
                 // console.log("llws收到消息啦:" +event.data);
                 if(event.data!='pong'){
                     options.succ(event.data);
@@ -57,6 +57,7 @@ $(function () {
     };
 
     function reconnect(url) {
+        var lockReconnect = false;  //避免ws重复连接
         if(lockReconnect) return;
         lockReconnect = true;
         setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多

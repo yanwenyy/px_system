@@ -3,6 +3,7 @@ const http_url={
     formal_url:"http://bobao.yingtaiwx.com/px_edu",//正式
     test_url:"http://bobao.yingtaiwx.com/px_edu",//测试
     Socket_url:"ws://bobao.yingtaiwx.com/px_edu/imserver/",
+    // Socket_url:"ws://192.168.2.19:8081/px_edu/imserver/",
     url:"http://bobao.yingtaiwx.com/px_edu"
 };
 function GetQueryString(name)
