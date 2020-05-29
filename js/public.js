@@ -2,8 +2,8 @@
 const http_url = {
     formal_url: "http://bobao.yingtaiwx.com/px_edu",//正式
     test_url: "http://bobao.yingtaiwx.com/px_edu",//测试
-    // Socket_url: "ws://bobao.yingtaiwx.com/px_edu/imserver/",
-    Socket_url:"ws://192.168.2.19:8081/px_edu/imserver/",
+    Socket_url: "ws://bobao.yingtaiwx.com/px_edu/imserver/",
+    // Socket_url:"ws://192.168.2.19:8081/px_edu/imserver/",
     url: "http://bobao.yingtaiwx.com/px_edu"
 };
 
@@ -114,7 +114,7 @@ PxSocket.prototype = {
             };
             _this.ws.onopen = function () {
                 _this.heartCheck();      //心跳检测重置
-                console.log(_this.options.name +"  "+ new Date().toUTCString());
+                // console.log(_this.options.name +"  "+ new Date().toUTCString());
                 console.log("connection success！")
             };
             _this.ws.onmessage = function (event) {
@@ -123,7 +123,7 @@ PxSocket.prototype = {
                 if (event.data != 'pong') {
                     _this.options.succ(event.data);
                 } else {
-                    console.log(_this.options.name + " is " + event.data);
+                    // console.log(_this.options.name + " is " + event.data);
                 }
             };
             _this.ws.onclose = function () {
