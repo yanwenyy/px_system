@@ -1,105 +1,31 @@
 $(function () {
-    var socket=[]; //websocket对象数组
-
-    function connect(options) {
-        try{
-            if ('WebSocket' in window) {
-                socket[options] = new WebSocket(http_url.Socket_url+options.id);
-                // console.log(http_url.Socket_url+options.id)
-            } else {
-                alert("您的浏览器不支持websocket");
-            }
-            socket[options].onerror = function () {
-                reconnect(options);
-                console.log("send error！");
-            };
-            socket[options].onopen = function () {
-                // heartCheck.reset().start(socket[options]);      //心跳检测重置
-                // console.log(options.name+new Date().toUTCString());
-                console.log("connection success！")
-            };
-            socket[options].onmessage = function (event) {
-                // heartCheck.reset().start(socket[options]);      //拿到任何消息都说明当前连接是正常的
-                // console.log("llws收到消息啦:" +event.data);
-                if(event.data!='pong'){
-                    options.succ(event.data);
-                }else{
-                    // console.log(options.name +" is "+event.data);
-                }
-            };
-            socket[options].onclose = function () {
-                reconnect(options);
-                console.log("closed websockettttttt!")
-            }
-        }catch {
-            reconnect(options);
-        }
-
-    }
-    var list=[
-        {
-            name:'getData',
-            id:'GHW_10000',
-            succ:getData
-        },{
-            name:'allProcess',
-            id:'GHS_10000',
-            succ:allProcess
-        },{
-            name:'listProcess',
-            id:'GHA_10000',
-            succ:listProcess
-        }
-    ];
+    var num="_"+randomString();
+    var ws1=new PxSocket({
+        url:http_url.Socket_url,
+        name:'getData',
+        data:'GHW_10000'+num,
+        succ:getData
+    });
+    var ws2=new PxSocket({
+        url:http_url.Socket_url,
+        name:'allProcess',
+        data:'GHS_10000'+num,
+        succ:allProcess
+    });
+    var ws3=new PxSocket({
+        url:http_url.Socket_url,
+        name:'listProcess',
+        data:'GHA_10000'+num,
+        succ:listProcess
+    });
+    ws1.connect();
+    ws2.connect();
+    ws3.connect();
     window.onbeforeunload = function () {
-
-        var i=0,len=socket.length;
-        for(;i<len;i++){
-            var v=socket[i];
-            socket[i].close(3000, "强制关闭");
-
-        }
-
+        ws1.close();
+        ws2.close();
+        ws3.close();
     };
-    function reconnect(url) {
-        var lockReconnect = false;  //避免ws重复连接
-        if(lockReconnect) return;
-        lockReconnect = true;
-        setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
-            connect(url);
-            lockReconnect = false;
-        }, 2000);
-    }
-
-//心跳检测
-    var heartCheck = {
-        timeout: 10000,        //9分钟发一次心跳
-        timeoutObj: null,
-        serverTimeoutObj: null,
-        reset: function(){
-            clearTimeout(this.timeoutObj);
-            clearTimeout(this.serverTimeoutObj);
-            return this;
-        },
-        start: function(ws){
-            var self = this;
-            this.timeoutObj = setTimeout(function(){
-                //这里发送一个心跳，后端收到后，返回一个心跳消息，
-                //onmessage拿到返回的心跳就说明连接正常
-                console.log(ws)
-                ws.send("ping");
-                console.log("ping!");
-                self.serverTimeoutObj = setTimeout(function(){//如果超过一定时间还没重置，说明后端主动断开了
-                    ws.close();     //如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
-                }, self.timeout)
-            }, this.timeout)
-        }
-    };
-    var i=0,len=list.length;
-    for(;i<len;i++){
-        var v=list[i];
-        connect(v);
-    }
     function getData(message) {
        // console.log(message)
         var datas=JSON.parse(message);
