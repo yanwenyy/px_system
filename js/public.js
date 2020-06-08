@@ -6,7 +6,6 @@ const http_url = {
     // Socket_url:"ws://192.168.2.19:8081/px_edu/imserver/",
     url: "http://bobao.yingtaiwx.com/px_edu"
 };
-
 function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
@@ -123,7 +122,7 @@ PxSocket.prototype = {
                 if (event.data != 'pong') {
                     _this.options.succ(event.data);
                 } else {
-                    // console.log(_this.options.name + " is " + event.data);
+                    console.log(_this.options.name + " is " + event.data);
                 }
             };
             _this.ws.onclose = function () {

@@ -1,15 +1,16 @@
 $(function () {
     var id = GetQueryString("id");
+    var num="_"+randomString();
     var ws1=new PxSocket({
         url:http_url.Socket_url,
         name:'getData',
-        data:'AGW_' + id,
+        data:'AGW_' + id +num,
         succ:getData
     });
     var ws2=new PxSocket({
         url:http_url.Socket_url,
         name:'listProcess',
-        data:'AGS_' + id,
+        data:'AGS_' + id +num,
         succ:listProcess
     });
     ws1.connect();
