@@ -68,7 +68,7 @@ $(function () {
                 '<td>'+v.effectiveData+'</td>\n' +
                 '<td>'+(v.effectiveRate*100).toFixed(2)+'%</td>\n' +
                 '<td>'+v.todayConsumeMoney+'</td>\n' +
-                '<td>'+(v.effective*100).toFixed(2)+'</td>\n' +
+                '<td>'+(v.effective).toFixed(2)+'</td>\n' +
                 '</tr>'
         }
         $("tbody").html(html)
@@ -378,6 +378,10 @@ $(function () {
                 {
                     type: 'category',
                     name:'日期',
+                    nameTextStyle: {
+                        padding: [30, 0, 0, -20]    // 四个数字分别为上右下左与原位置距离
+                    },
+                    // nameGap: 30 ,
                     axisLine: {
                         lineStyle: {
                             color: '#2BB5FF',

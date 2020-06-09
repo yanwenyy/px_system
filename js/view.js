@@ -70,7 +70,7 @@ $(function () {
                 '<td>'+v.effectiveData+'</td>\n' +
                 '<td>'+(v.effectiveRate*100).toFixed(2)+'%</td>\n' +
                 '<td>'+v.todayConsumeMoney+'</td>\n' +
-                '<td>'+(v.effective*100).toFixed(2)+'</td>\n' +
+                '<td>'+(v.effective).toFixed(2)+'</td>\n' +
                 '</tr>'
         }
         $("tbody").html(html)
